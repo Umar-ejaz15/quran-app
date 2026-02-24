@@ -68,7 +68,7 @@ body {
 
 /* Arabic text styling */
 .arabic-text {
-  font-family: "Amiri", "Traditional Arabic", "Arabic Typesetting", serif;
+  font-family: var(--font-amiri), "Traditional Arabic", "Arabic Typesetting", serif;
   font-size: 1.5rem;
   line-height: 2.5;
   direction: rtl;

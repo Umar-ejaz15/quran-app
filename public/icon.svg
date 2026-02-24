@@ -1,0 +1,16 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="64" fill="#2d5f4f"/>
+  
+  <!-- Decorative Islamic Pattern -->
+  <g opacity="0.1">
+    <circle cx="256" cy="256" r="200" stroke="#d4af37" stroke-width="2"/>
+    <circle cx="256" cy="256" r="180" stroke="#d4af37" stroke-width="1"/>
+  </g>
+  
+  <!-- Arabic Letter Qaf (ق) - Representing Quran -->
+  <text x="256" y="330" font-family="Arial, sans-serif" font-size="240" font-weight="bold" fill="#d4af37" text-anchor="middle" dominant-baseline="middle">ق</text>
+  
+  <!-- Decorative bottom accent -->
+  <path d="M 156 400 Q 256 410 356 400" stroke="#d4af37" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>

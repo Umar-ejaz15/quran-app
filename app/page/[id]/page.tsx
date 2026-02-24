@@ -2,18 +2,19 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { ChevronLeft, ChevronRight, FileText } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import AyahCard from '@/components/AyahCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { getSurahWithOffset } from '@/lib/api';
-import { Surah } from '@/types/quran';
+import { getPageWithOffset } from '@/lib/api';
+import { Ayah } from '@/types/quran';
 
-export default function SurahDetailPage() {
+export default function PageDetailPage() {
   const params = useParams();
-  const surahNumber = parseInt(params.id as string);
+  const pageNumber = parseInt(params.id as string);
   
-  const [surah, setSurah] = useState<Surah | null>(null);
-  const [translation, setTranslation] = useState<Surah | null>(null);
+  const [ayahs, setAyahs] = useState<Ayah[]>([]);
+  const [translations, setTranslations] = useState<Ayah[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEdition, setSelectedEdition] = useState('en.asad');
   const [reciterEdition, setReciterEdition] = useState('ar.alafasy');
@@ -21,27 +22,27 @@ export default function SurahDetailPage() {
   const [limit, setLimit] = useState<string>('');
 
   useEffect(() => {
-    async function loadSurah() {
+    async function loadPage() {
       try {
         setLoading(true);
         const offVal = offset ? parseInt(offset, 10) : undefined;
         const limitVal = limit ? parseInt(limit, 10) : undefined;
         const [arabicData, translationData] = await Promise.all([
-          getSurahWithOffset(surahNumber, reciterEdition, offVal, limitVal),
-          getSurahWithOffset(surahNumber, selectedEdition, offVal, limitVal),
+          getPageWithOffset(pageNumber, reciterEdition, offVal, limitVal),
+          getPageWithOffset(pageNumber, selectedEdition, offVal, limitVal),
         ]);
         
-        setSurah(arabicData.data);
-        setTranslation(translationData.data);
+        setAyahs(arabicData.data.ayahs);
+        setTranslations(translationData.data.ayahs);
       } catch (error) {
-        console.error('Error loading surah:', error);
+        console.error('Error loading page:', error);
       } finally {
         setLoading(false);
       }
     }
 
-    loadSurah();
-  }, [surahNumber, selectedEdition, reciterEdition, offset, limit]);
+    loadPage();
+  }, [pageNumber, selectedEdition]);
 
   if (loading) {
     return (
@@ -52,48 +53,46 @@ export default function SurahDetailPage() {
     );
   }
 
-  if (!surah || !translation) {
-    return (
-      <div className="min-h-screen pattern-bg pb-20 md:pb-0">
-        <Navigation />
-        <div className="container mx-auto px-4 py-12 text-center">
-          <p className="text-xl text-[var(--accent)]">Surah not found</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen pattern-bg pb-20 md:pb-0">
       <Navigation />
       
       <main className="container mx-auto px-4 py-8 md:py-12">
-        {/* Surah Header */}
+        {/* Page Header */}
         <div className="mb-8 md:mb-12 p-6 md:p-8 rounded-2xl bg-[var(--card-bg)] border border-[var(--border)] shadow-lg animate-fade-in mx-2">
           <div className="text-center">
-            <div className="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 mb-4 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] text-white text-xl md:text-2xl font-bold shadow-md">
-              {surah.number}
+            <div className="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 mb-4 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] shadow-md">
+              <FileText className="text-white" size={28} />
             </div>
             
-            <h1 className="text-3xl md:text-5xl font-bold mb-2 text-[var(--foreground)] px-4">
-              {surah.englishName}
+            <h1 className="text-3xl md:text-5xl font-bold mb-2 text-[var(--foreground)]">
+              Page {pageNumber}
             </h1>
             
-            <p className="text-2xl md:text-3xl mb-3 text-[var(--primary)] arabic-text">
-              {surah.name}
+            <p className="text-base md:text-lg text-[var(--accent)] mb-4">
+              {ayahs.length} Verses
             </p>
-            
-            <p className="text-lg md:text-xl text-[var(--accent)] mb-4 px-4">
-              {surah.englishNameTranslation}
-            </p>
-            
-            <div className="flex items-center justify-center gap-3 md:gap-4 text-xs md:text-sm text-[var(--accent)] flex-wrap px-4">
-              <span className="px-4 py-2 rounded-full bg-[var(--hover)] capitalize">
-                {surah.revelationType}
-              </span>
-              <span className="px-3 md:px-4 py-2 rounded-full bg-[var(--hover)]">
-                {surah.numberOfAyahs} Verses
-              </span>
+
+            {/* Page Navigation */}
+            <div className="flex items-center justify-center gap-3 md:gap-4 mt-6">
+              {pageNumber > 1 && (
+                <a
+                  href={`/page/${pageNumber - 1}`}
+                  className="px-4 md:px-6 py-2 rounded-lg bg-[var(--hover)] border border-[var(--border)] text-[var(--foreground)] hover:border-[var(--primary)] transition-all flex items-center gap-2 text-sm md:text-base"
+                >
+                  <ChevronLeft size={18} />
+                  Previous
+                </a>
+              )}
+              {pageNumber < 604 && (
+                <a
+                  href={`/page/${pageNumber + 1}`}
+                  className="px-4 md:px-6 py-2 rounded-lg bg-[var(--hover)] border border-[var(--border)] text-[var(--foreground)] hover:border-[var(--primary)] transition-all flex items-center gap-2 text-sm md:text-base"
+                >
+                  Next
+                  <ChevronRight size={18} />
+                </a>
+              )}
             </div>
           </div>
 
@@ -123,7 +122,7 @@ export default function SurahDetailPage() {
                 <select
                   value={reciterEdition}
                   onChange={(e) => setReciterEdition(e.target.value)}
-                  className="w-full px-3 md:px-4 py-2 rounded-lg bg-[var(--hover)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-sm md:text-base"
+                  className="w-full px-3 py-2 rounded-lg bg-[var(--hover)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-sm"
                 >
                   <option value="ar.alafasy">Mishary Alafasy</option>
                   <option value="ar.husary">Mahmoud Al-Husary</option>
@@ -139,8 +138,8 @@ export default function SurahDetailPage() {
                   min={0}
                   value={offset}
                   onChange={(e) => setOffset(e.target.value)}
-                  placeholder="e.g., 0"
                   className="w-full px-3 py-2 rounded-lg bg-[var(--hover)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-sm"
+                  placeholder="0"
                 />
               </div>
               <div>
@@ -152,33 +151,21 @@ export default function SurahDetailPage() {
                   min={1}
                   value={limit}
                   onChange={(e) => setLimit(e.target.value)}
-                  placeholder="e.g., 5"
                   className="w-full px-3 py-2 rounded-lg bg-[var(--hover)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-sm"
+                  placeholder="e.g., 5"
                 />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bismillah */}
-        {surah.number !== 1 && surah.number !== 9 && (
-          <div className="mb-6 md:mb-8 p-4 md:p-6 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] text-center animate-fade-in mx-2">
-            <p className="arabic-text text-2xl md:text-3xl text-[var(--primary)]">
-              بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
-            </p>
-            <p className="text-xs md:text-sm text-[var(--accent)] mt-2">
-              In the name of Allah, the Most Gracious, the Most Merciful
-            </p>
-          </div>
-        )}
-
         {/* Ayahs */}
         <div className="space-y-4 md:space-y-6 px-2">
-          {surah.ayahs?.map((ayah, index) => (
+          {ayahs.map((ayah, index) => (
             <AyahCard
               key={ayah.number}
               ayah={ayah}
-              translationText={translation.ayahs?.[index]?.text}
+              translationText={translations[index]?.text}
             />
           ))}
         </div>

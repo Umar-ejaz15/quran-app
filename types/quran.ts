@@ -8,6 +8,9 @@ export interface Ayah {
   ruku: number;
   hizbQuarter: number;
   sajda?: boolean | { id: number; recommended: boolean; obligatory: boolean };
+  // Audio editions return stream URLs
+  audio?: string;
+  audioSecondary?: string[];
 }
 
 export interface Surah {
@@ -30,6 +33,13 @@ export interface Edition {
   direction?: string;
 }
 
+// List of all surahs (basic info only, no ayahs)
+export interface SurahsListResponse {
+  code: number;
+  status: string;
+  data: Surah[];
+}
+
 export interface QuranResponse {
   code: number;
   status: string;
@@ -45,12 +55,25 @@ export interface SurahResponse {
   data: Surah & { edition: Edition };
 }
 
+// Multiple editions of the same surah
+export interface SurahMultiEditionResponse {
+  code: number;
+  status: string;
+  data: Array<Surah & { edition: Edition }>;
+}
+
 export interface AyahResponse {
   code: number;
   status: string;
   data: Ayah & { surah: Surah; edition: Edition };
 }
 
+// Same ayah delivered in multiple editions (array order matches requested identifiers)
+export interface AyahMultiEditionResponse {
+  code: number;
+  status: string;
+  data: Array<Ayah & { surah: Surah; edition: Edition }>;
+}
 export interface EditionsResponse {
   code: number;
   status: string;
