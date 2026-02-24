@@ -8,38 +8,50 @@ interface SurahCardProps {
 }
 
 export default function SurahCard({ surah, showAyahCount = true }: SurahCardProps) {
+  const isMakki = surah.revelationType?.toLowerCase() === 'meccan';
+
   return (
     <Link href={`/surah/${surah.number}`}>
-      <div className="group h-full p-6 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] hover:border-[var(--primary)] hover:shadow-lg transition-all duration-300 cursor-pointer animate-fade-in">
+      <div className="group h-full p-5 rounded-xl bg-(--card-bg) border border-(--border) hover:border-primary hover:shadow-lg transition-all duration-300 cursor-pointer animate-fade-in"
+           style={{ borderTop: '3px solid transparent' }}
+           onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderTopColor = 'var(--secondary)'; }}
+           onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderTopColor = 'transparent'; }}>
+
         <div className="flex items-start justify-between gap-4">
           {/* Surah Number Badge */}
-          <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center text-white font-bold shadow-md group-hover:scale-110 transition-transform">
+          <div className="shrink-0 w-11 h-11 rounded-lg bg-linear-to-br from-primary to-(--primary-dark) flex items-center justify-center text-white font-bold shadow-md group-hover:scale-110 transition-transform text-sm">
             {surah.number}
           </div>
 
           {/* Surah Info */}
           <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-bold text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors truncate">
+            <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors truncate">
               {surah.englishName}
             </h3>
-            <p className="text-sm text-[var(--accent)] mt-1 truncate">
+            <p className="text-xs text-(--accent) mt-0.5 truncate">
               {surah.englishNameTranslation}
             </p>
             {showAyahCount && (
-              <div className="flex items-center gap-3 mt-2 text-xs text-[var(--accent)]">
+              <div className="flex items-center gap-2 mt-2 text-xs text-(--muted)">
                 <span className="flex items-center gap-1">
-                  <BookText size={16} />
-                  {surah.numberOfAyahs} Verses
+                  <BookText size={13} />
+                  {surah.numberOfAyahs} verses
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-[var(--hover)] capitalize">
-                  {surah.revelationType}
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${
+                    isMakki
+                      ? 'bg-primary/10 text-primary'
+                      : 'bg-(--secondary)/15 text-secondary'
+                  }`}
+                >
+                  {isMakki ? 'Makki' : 'Madani'}
                 </span>
               </div>
             )}
           </div>
 
           {/* Arabic Name */}
-          <div className="flex-shrink-0 text-2xl font-bold text-[var(--primary)] group-hover:text-[var(--secondary)] transition-colors arabic-text">
+          <div className="shrink-0 text-xl font-bold text-primary group-hover:text-secondary transition-colors arabic-text leading-none mt-1">
             {surah.name}
           </div>
         </div>
