@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link';
 import { BookText } from 'lucide-react';
 import { Surah } from '@/types/quran';
