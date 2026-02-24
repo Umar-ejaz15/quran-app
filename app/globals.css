@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fdfcfa;
+  --foreground: #1a1a1a;
+  --primary: #2d5f4f;
+  --primary-light: #3a7963;
+  --primary-dark: #1f4438;
+  --secondary: #d4af37;
+  --accent: #8b7355;
+  --card-bg: #ffffff;
+  --border: #e5e5e5;
+  --hover: #f8f7f5;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f1419;
+    --foreground: #e8e6e3;
+    --primary: #4a9d7f;
+    --primary-light: #5db094;
+    --primary-dark: #3a7963;
+    --secondary: #d4af37;
+    --accent: #a88f6f;
+    --card-bg: #1a1f26;
+    --border: #2a3038;
+    --hover: #242930;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Arabic text styling */
+.arabic-text {
+  font-family: "Amiri", "Traditional Arabic", "Arabic Typesetting", serif;
+  font-size: 1.5rem;
+  line-height: 2.5;
+  direction: rtl;
+  text-align: right;
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Islamic pattern background */
+.pattern-bg {
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(45, 95, 79, 0.03) 0%, transparent 50%);
+}
