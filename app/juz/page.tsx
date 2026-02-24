@@ -35,11 +35,11 @@ export default async function JuzPage() {
           {Array.isArray(juzs) && juzs.length > 0 ? juzs.map((juz, i) => (
             <Link
               key={`juz-${i}`}
-              href={`/juz/${juz.index || juz.number || i+1}`}
+              href={`/juz/${juz.index ?? i + 1}`}
               className="group p-6 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] hover:border-[var(--primary)] hover:shadow-lg transition-all duration-300 text-center animate-fade-in"
             >
               <div className="text-4xl font-bold bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] bg-clip-text text-transparent mb-3 group-hover:scale-110 transition-transform">
-                {juz.index || juz.number || i+1}
+                {juz.index ?? i + 1}
               </div>
               <div className="text-xs text-[var(--accent)] space-y-1">
                 <div>From: {juz.start || juz.from || '-'}</div>
