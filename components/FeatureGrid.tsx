@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import { BookOpen, Search, BookText, Layers, Hand, Globe, FileText, BookMarked, ScrollText, Layers3 } from 'lucide-react';
+import { BookOpen, Search, BookText, Layers, Hand, Globe, FileText } from 'lucide-react';
 import React from 'react';
 
 const features = [

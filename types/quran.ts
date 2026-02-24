@@ -131,7 +131,15 @@ export interface MetaData {
   };
   juzs: {
     count: number;
-    references: Array<{ index: number; start: string; end: string }>;
+    // Meta API returns `number` plus start/end references; keep optional fallbacks for resiliency
+    references: Array<{
+      number?: number;
+      index?: number;
+      start: string;
+      end: string;
+      from?: string;
+      to?: string;
+    }>;
   };
   sajdas: {
     count: number;

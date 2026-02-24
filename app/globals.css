@@ -17,6 +17,10 @@
   --success:           #2a9065;
   --gold-glow:         rgba(200, 148, 30, 0.15);
   --green-glow:        rgba(29, 111, 78, 0.12);
+  /* Font fallbacks (self-hosted friendly) */
+  --font-geist-sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-geist-mono: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+  --font-amiri: "Amiri", "Scheherazade New", "Traditional Arabic", serif;
 }
 
 @theme inline {

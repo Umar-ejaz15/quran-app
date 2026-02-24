@@ -5,10 +5,11 @@ import Link from 'next/link';
 import { Search as SearchIcon, Loader2 } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import { searchQuran } from '@/lib/api';
+import type { SearchResponse } from '@/types/quran';
 
 export default function SearchPage() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<SearchResponse['data']['matches']>([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [editionOrLanguage, setEditionOrLanguage] = useState('en');

@@ -1,23 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Amiri } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const amiri = Amiri({
-  weight: ['400', '700'],
-  subsets: ['arabic', 'latin'],
-  variable: '--font-amiri',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: {
@@ -63,8 +45,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <meta name="application-name" content="Al-Quran" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -75,9 +55,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${amiri.variable} antialiased`}
-      >
+      <body className="antialiased">
         {children}
       </body>
     </html>

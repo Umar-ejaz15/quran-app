@@ -97,7 +97,7 @@ export default function Home() {
               إِنَّ هَٰذَا ٱلْقُرْءَانَ يَهْدِى لِلَّتِى هِىَ أَقْوَمُ
             </p>
             <p className="text-sm md:text-base text-(--accent) italic mb-2">
-              "Indeed, this Quran guides to that which is most upright…"
+              &ldquo;Indeed, this Qur&apos;an guides to that which is most upright...&rdquo;
             </p>
             <p className="text-xs text-(--muted)">Surah Al-Isra, 17:9</p>
           </div>

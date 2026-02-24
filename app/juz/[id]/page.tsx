@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import AyahCard from '@/components/AyahCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { getJuz, getJuzWithOffset } from '@/lib/api';
+import { getJuzWithOffset } from '@/lib/api';
 import { Ayah } from '@/types/quran';
 
 export default function JuzDetailPage() {
@@ -41,7 +41,7 @@ export default function JuzDetailPage() {
     }
 
     loadJuz();
-  }, [juzNumber, selectedEdition]);
+  }, [juzNumber, selectedEdition, reciterEdition, offset, limit]);
 
   if (loading) {
     return (

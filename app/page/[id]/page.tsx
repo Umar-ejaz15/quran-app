@@ -42,7 +42,7 @@ export default function PageDetailPage() {
     }
 
     loadPage();
-  }, [pageNumber, selectedEdition]);
+  }, [pageNumber, selectedEdition, reciterEdition, offset, limit]);
 
   if (loading) {
     return (

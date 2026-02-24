@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 // Script to generate PWA icons from SVG
 // Run: node scripts/generate-icons.js
 
-const fs = require('fs');
 const path = require('path');
 
 const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
@@ -21,9 +21,9 @@ console.log('- Install: pnpm add -D sharp');
 console.log('- Then run this updated script\n');
 
 console.log('Option 3: Use ImageMagick (CLI)');
-console.log('Required sizes:', sizes.map(s => `${s}x${s}`).join(', '));
+console.log('Required sizes:', sizes.map((s) => `${s}x${s}`).join(', '));
 console.log('\nCommands:');
-sizes.forEach(size => {
+sizes.forEach((size) => {
   console.log(`convert public/icon.svg -resize ${size}x${size} public/icon-${size}x${size}.png`);
 });
 
@@ -33,9 +33,9 @@ console.log('\n✅ For now, using placeholder approach...\n');
 try {
   const sharp = require('sharp');
   const svgPath = path.join(__dirname, '../public/icon.svg');
-  
+
   console.log('Sharp is available! Generating icons...\n');
-  
+
   (async () => {
     for (const size of sizes) {
       const outputPath = path.join(__dirname, `../public/icon-${size}x${size}.png`);
@@ -47,10 +47,12 @@ try {
     }
     console.log('\n✅ All icons generated successfully!');
   })();
-  
-} catch (err) {
+} catch (_err) {
   console.log('ℹ️  Sharp not installed. To auto-generate icons:');
   console.log('   pnpm add -D sharp');
-  console.log('   node scripts/generate-icons.js\n');
-  console.log('Or use one of the options above.');
+  console.log('   node scripts/generate-icons.js');
+  console.log('\nOr use one of the options above.');
+  if (process.env.DEBUG) {
+    console.error(_err);
+  }
 }
