@@ -1,26 +1,59 @@
 @import "tailwindcss";
 
-/* ─── Design Tokens: Al-Jannah Theme ─── */
+/* ════════════════════════════════════════════════════════════
+   DESIGN SYSTEM — Al-Quran Al-Kareem
+   Premium Islamic app aesthetic: Deep greens, warm golds,
+   parchment backgrounds, rich typography
+════════════════════════════════════════════════════════════ */
+
+/* ─── Design Tokens: Light Mode ─── */
 :root {
-  --background:        #faf8f3;
-  --foreground:        #1c1a16;
-  --primary:           #1d6f4e;
-  --primary-light:     #2a9065;
-  --primary-dark:      #124432;
-  --secondary:         #c8941e;
-  --secondary-light:   #e2b040;
-  --accent:            #7a6a52;
+  /* Core surfaces — warm manuscript white */
+  --background:        #f0ece4;
+  --foreground:        #0d1a0d;
   --card-bg:           #ffffff;
-  --border:            #e8e0d5;
-  --hover:             #f3ece2;
-  --muted:             #9a8b79;
-  --success:           #2a9065;
-  --gold-glow:         rgba(200, 148, 30, 0.15);
-  --green-glow:        rgba(29, 111, 78, 0.12);
-  /* Font fallbacks (self-hosted friendly) */
-  --font-geist-sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  --font-geist-mono: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
-  --font-amiri: "Amiri", "Scheherazade New", "Traditional Arabic", serif;
+  --hover:             #eaf2ec;
+  --surface:           #f7f4ef;
+
+  /* Brand: Deep Islamic Green — solid, authoritative */
+  --primary:           #0c5130;
+  --primary-light:     #177a4a;
+  --primary-dark:      #073620;
+  --primary-faint:     #e4f2ea;
+
+  /* Brand: Amber Gold — accent only, not dominant */
+  --secondary:         #8a5c00;
+  --secondary-light:   #b07c14;
+  --secondary-dark:    #5e3e00;
+  --secondary-faint:   #fdf3e0;
+
+  /* Text shades */
+  --accent:            #2e3a2e;
+  --muted:             #6a7060;
+  --subtle:            #b0b8a8;
+
+  /* Borders — clean, not heavy */
+  --border:            #d8d4ca;
+  --border-strong:     #b8b2a6;
+
+  /* Status */
+  --success:           #177a4a;
+
+  /* Shadow / glow — very subtle */
+  --gold-glow:         rgba(138, 92, 0, 0.10);
+  --green-glow:        rgba(12, 81, 48, 0.08);
+
+  /* Mushaf page */
+  --mushaf-bg:         #fdf8ee;
+  --mushaf-border:     #c0901a;
+  --mushaf-text:       #140e08;
+  --mushaf-secondary:  #f7eedc;
+  --mushaf-ornament:   #9a7010;
+
+  /* Fonts */
+  --font-sans:         "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono:         "SFMono-Regular", "Consolas", monospace;
+  --font-arabic:       "Amiri Quran", "Amiri", "Scheherazade New", "Traditional Arabic", serif;
 }
 
 @theme inline {
@@ -28,100 +61,322 @@
   --color-foreground:      var(--foreground);
   --color-primary:         var(--primary);
   --color-secondary:       var(--secondary);
-  --font-sans:             var(--font-geist-sans);
-  --font-mono:             var(--font-geist-mono);
+  --font-sans:             var(--font-sans);
+  --font-mono:             var(--font-mono);
 }
 
+/* ─── Dark Mode — warm midnight green, not cold blue ─── */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background:        #0c1118;
-    --foreground:        #ede8e0;
-    --primary:           #39b87d;
-    --primary-light:     #50cc95;
-    --primary-dark:      #2a9060;
-    --secondary:         #e2b040;
-    --secondary-light:   #f0c860;
-    --accent:            #b5a48e;
-    --card-bg:           #131d29;
-    --border:            #1f2e3d;
-    --hover:             #182235;
-    --muted:             #7a8fa8;
-    --gold-glow:         rgba(226, 176, 64, 0.12);
-    --green-glow:        rgba(57, 184, 125, 0.10);
+    --background:        #0c100d;
+    --foreground:        #e4dfd4;
+    --card-bg:           #131a14;
+    --hover:             #1a241b;
+    --surface:           #0f140f;
+
+    --primary:           #3ec87a;
+    --primary-light:     #56da90;
+    --primary-dark:      #2ea868;
+    --primary-faint:     rgba(62, 200, 122, 0.10);
+
+    --secondary:         #c49020;
+    --secondary-light:   #dba838;
+    --secondary-dark:    #a07010;
+    --secondary-faint:   rgba(196, 144, 32, 0.10);
+
+    --accent:            #b8b0a0;
+    --muted:             #5e7a68;
+    --subtle:            #253025;
+
+    --border:            #1c2a1e;
+    --border-strong:     #283c2a;
+
+    --gold-glow:         rgba(196, 144, 32, 0.12);
+    --green-glow:        rgba(62, 200, 122, 0.08);
+
+    --mushaf-bg:         #181208;
+    --mushaf-border:     #c09018;
+    --mushaf-text:       #f0e8d0;
+    --mushaf-secondary:  #201808;
+    --mushaf-ornament:   #c49020;
   }
 }
 
-/* ─── Base ─── */
+/* ════════════════════════════════════════════════════════════
+   BASE STYLES
+════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* ─── Scrollbar ─── */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--background); }
+/* ─── Custom Scrollbar ─── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* ─── Hide scrollbar but keep scrollability ─── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── Focus Ring ─── */
+*:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
   border-radius: 4px;
 }
-::-webkit-scrollbar-thumb:hover { background: var(--secondary); }
 
-/* ─── Smooth transitions ─── */
-* {
-  transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease,
-    color 0.25s ease,
-    box-shadow 0.25s ease;
+/* ─── Selection ─── */
+::selection {
+  background: rgba(27, 107, 74, 0.18);
+  color: var(--foreground);
 }
 
-/* ─── Arabic / Quran Text ─── */
+/* ─── Smooth transitions ─── */
+a, button, input, select, textarea {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* ════════════════════════════════════════════════════════════
+   ARABIC / QURAN TYPOGRAPHY
+════════════════════════════════════════════════════════════ */
+
 .arabic-text {
-  font-family: var(--font-amiri), "Traditional Arabic", "Arabic Typesetting", "Scheherazade New", serif;
-  font-size: 1.6rem;
-  line-height: 2.6;
+  font-family: var(--font-arabic);
+  font-size: 1.65rem;
+  line-height: 2.8;
   direction: rtl;
   text-align: right;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+  word-spacing: 0.08em;
 }
 
 .arabic-text-lg {
-  font-family: var(--font-amiri), "Traditional Arabic", serif;
-  font-size: 2.2rem;
+  font-family: var(--font-arabic);
+  font-size: 2rem;
   line-height: 2.8;
   direction: rtl;
   text-align: center;
-  letter-spacing: 0.02em;
 }
 
 .arabic-text-hero {
-  font-family: var(--font-amiri), "Traditional Arabic", serif;
-  font-size: 1.8rem;
-  line-height: 2.4;
+  font-family: var(--font-arabic);
+  font-size: 1.85rem;
+  line-height: 2.5;
   direction: rtl;
   text-align: center;
-  letter-spacing: 0.03em;
 }
 
-/* ─── Bismillah display ─── */
 .bismillah {
-  font-family: var(--font-amiri), "Traditional Arabic", serif;
+  font-family: var(--font-arabic);
   direction: rtl;
   text-align: center;
-  font-size: 1.9rem;
+  font-size: 1.95rem;
   line-height: 2.2;
   color: var(--primary);
-  letter-spacing: 0.04em;
 }
 
-/* ─── Islamic Divider ─── */
+/* ════════════════════════════════════════════════════════════
+   BACKGROUNDS
+════════════════════════════════════════════════════════════ */
+
+.pattern-bg {
+  background-color: var(--background);
+  /* Very subtle dot grid — professional, minimal texture */
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 28px 28px;
+  min-height: 100vh;
+}
+
+@media (prefers-color-scheme: dark) {
+  .pattern-bg {
+    background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   CARDS & SURFACES
+════════════════════════════════════════════════════════════ */
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+.card-elevated {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.card-elevated:hover {
+  box-shadow: 0 4px 20px rgba(27, 107, 74, 0.12), 0 8px 32px rgba(0, 0, 0, 0.06);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.card-hover {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.card-hover:hover {
+  box-shadow: 0 4px 24px rgba(27, 107, 74, 0.10);
+  border-color: var(--primary);
+}
+
+/* ─── Gold accent border ─── */
+.gold-accent {
+  border-top: 3px solid var(--secondary);
+}
+
+/* ─── Verse badge (circular number) ─── */
+.verse-badge {
+  min-width: 2.2rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px var(--green-glow);
+  flex-shrink: 0;
+}
+
+/* ════════════════════════════════════════════════════════════
+   MUSHAF PAGE STYLES
+════════════════════════════════════════════════════════════ */
+
+.mushaf-container {
+  position: relative;
+}
+
+.mushaf-page {
+  background: var(--mushaf-bg);
+  border: 2px solid var(--mushaf-border);
+  border-radius: 4px;
+  padding: 2rem 2.5rem;
+  box-shadow:
+    0 0 0 6px var(--mushaf-secondary),
+    0 0 0 8px var(--mushaf-border),
+    0 12px 48px rgba(0, 0, 0, 0.15),
+    inset 0 0 40px rgba(184, 114, 14, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Corner ornaments */
+.mushaf-page::before,
+.mushaf-page::after {
+  content: '❧';
+  position: absolute;
+  font-size: 1.5rem;
+  color: var(--mushaf-ornament);
+  opacity: 0.4;
+}
+.mushaf-page::before { top: 0.5rem; left: 0.75rem; }
+.mushaf-page::after  { bottom: 0.5rem; right: 0.75rem; transform: scaleX(-1); }
+
+.mushaf-header {
+  text-align: center;
+  padding: 0.5rem 0 1.25rem;
+  border-bottom: 1.5px solid var(--mushaf-border);
+  margin-bottom: 1.5rem;
+  opacity: 0.7;
+}
+
+.mushaf-surah-title {
+  display: block;
+  font-family: var(--font-arabic);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--mushaf-ornament);
+  text-align: center;
+  margin: 1.25rem 0 0.75rem;
+  direction: rtl;
+}
+
+.mushaf-bismillah {
+  font-family: var(--font-arabic);
+  font-size: 1.6rem;
+  color: var(--mushaf-ornament);
+  text-align: center;
+  direction: rtl;
+  margin: 0.5rem 0 1.25rem;
+  opacity: 0.9;
+}
+
+.mushaf-text {
+  font-family: var(--font-arabic);
+  font-size: clamp(1.3rem, 2.2vw, 1.75rem);
+  line-height: 3.2;
+  direction: rtl;
+  text-align: justify;
+  text-align-last: right;
+  color: var(--mushaf-text);
+  word-spacing: 0.12em;
+  letter-spacing: 0.02em;
+}
+
+.mushaf-verse-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-arabic);
+  font-size: 0.75em;
+  color: var(--mushaf-ornament);
+  margin: 0 0.15em;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.mushaf-footer {
+  text-align: center;
+  padding-top: 1.25rem;
+  margin-top: 1.25rem;
+  border-top: 1.5px solid var(--mushaf-border);
+  opacity: 0.6;
+}
+
+.mushaf-page-number {
+  font-size: 0.75rem;
+  color: var(--mushaf-ornament);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ════════════════════════════════════════════════════════════
+   DECORATIVE ELEMENTS
+════════════════════════════════════════════════════════════ */
+
 .islamic-divider {
   display: flex;
   align-items: center;
   gap: 1rem;
   color: var(--secondary);
-  opacity: 0.6;
+  opacity: 0.55;
 }
 .islamic-divider::before,
 .islamic-divider::after {
@@ -131,81 +386,115 @@ body {
   background: linear-gradient(to right, transparent, var(--secondary), transparent);
 }
 
-/* ─── Pattern Background ─── */
-.pattern-bg {
-  background-color: var(--background);
-  background-image:
-    radial-gradient(ellipse at 10% 20%,  var(--gold-glow)  0%, transparent 55%),
-    radial-gradient(ellipse at 90% 80%,  var(--green-glow) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 50%,  var(--gold-glow)  0%, transparent 70%);
-}
+/* ════════════════════════════════════════════════════════════
+   BUTTONS
+════════════════════════════════════════════════════════════ */
 
-/* ─── Card elevation ─── */
-.card-elevated {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
-}
-.card-elevated:hover {
-  box-shadow: 0 8px 32px rgba(29,111,78,0.10), 0 2px 8px rgba(0,0,0,0.06);
-  border-color: var(--primary);
-}
-
-/* ─── Gold border accent ─── */
-.gold-accent-border {
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--secondary);
-  border-radius: 0.75rem;
-}
-
-/* ─── Verse number badge ─── */
-.verse-badge {
-  width: 2.4rem;
-  height: 2.4rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  display: flex;
+.btn-primary {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 700;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 0.75rem;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
   box-shadow: 0 2px 8px var(--green-glow);
-  flex-shrink: 0;
+}
+.btn-primary:hover {
+  background: var(--primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px var(--green-glow);
 }
 
-/* ─── Animations ─── */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 0.75rem;
+  background: var(--card-bg);
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 2px solid var(--primary);
+  cursor: pointer;
+}
+.btn-outline:hover {
+  background: var(--primary);
+  color: white;
 }
 
-@keyframes slideInUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* ════════════════════════════════════════════════════════════
+   HOVER CARD UTILITIES (CSS-only, safe for Server Components)
+════════════════════════════════════════════════════════════ */
+
+/* Large card: border highlight + lift */
+.hover-card {
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.hover-card:hover {
+  border-color: var(--primary) !important;
+  box-shadow: 0 6px 24px rgba(27, 107, 74, 0.12) !important;
+  transform: translateY(-2px) !important;
 }
 
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position:  200% center; }
+/* Mini card: border + background tint */
+.hover-card-mini {
+  transition: border-color 0.2s, background 0.2s;
+}
+.hover-card-mini:hover {
+  border-color: var(--primary) !important;
+  background: var(--primary-faint) !important;
 }
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 var(--gold-glow); }
-  50%       { box-shadow: 0 0 16px 4px var(--gold-glow); }
+/* Page number cell: border + bg + color + scale */
+.hover-page-num {
+  transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.2s;
+  position: relative;
+}
+.hover-page-num:hover {
+  border-color: var(--primary) !important;
+  background: var(--primary-faint) !important;
+  color: var(--primary) !important;
+  transform: scale(1.08) !important;
+  z-index: 1;
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-out both;
+/* Outline button: fills with primary on hover */
+.hover-btn-outline {
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.hover-btn-outline:hover {
+  background: var(--primary) !important;
+  color: white !important;
+  box-shadow: 0 4px 16px var(--green-glow);
 }
 
-.animate-slide-up {
-  animation: slideInUp 0.6s ease-out both;
+/* ─── Select / Input ─── */
+.form-control {
+  width: 100%;
+  padding: 0.6rem 0.875rem;
+  border-radius: 0.625rem;
+  background: var(--hover);
+  border: 1.5px solid var(--border);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  appearance: none;
+}
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-faint);
 }
 
-/* ─── Gradient text utilities ─── */
+/* ════════════════════════════════════════════════════════════
+   GRADIENT TEXT UTILITIES
+════════════════════════════════════════════════════════════ */
+
 .text-gradient-primary {
   background: linear-gradient(135deg, var(--primary), var(--primary-light));
   -webkit-background-clip: text;
@@ -222,25 +511,156 @@ body {
 
 .text-gradient-hero {
   background: linear-gradient(
-    135deg,
-    var(--primary)       0%,
-    var(--primary-light) 40%,
-    var(--secondary)     100%
+    160deg,
+    var(--primary)      0%,
+    var(--primary-dark) 60%,
+    var(--secondary)    100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ─── Focus ring ─── */
-*:focus-visible {
-  outline: 2px solid var(--secondary);
-  outline-offset: 2px;
-  border-radius: 4px;
+/* ════════════════════════════════════════════════════════════
+   ANIMATIONS
+════════════════════════════════════════════════════════════ */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── Selection ─── */
-::selection {
-  background: rgba(29, 111, 78, 0.2);
-  color: var(--foreground);
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 var(--gold-glow); }
+  50%       { box-shadow: 0 0 20px 6px var(--gold-glow); }
+}
+
+@keyframes drawIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.45s ease-out both;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.55s ease-out both;
+}
+
+.animate-draw-in {
+  animation: drawIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── Stagger helpers ─── */
+.stagger-1  { animation-delay: 60ms;  }
+.stagger-2  { animation-delay: 120ms; }
+.stagger-3  { animation-delay: 180ms; }
+.stagger-4  { animation-delay: 240ms; }
+
+/* ─── Page badges ─── */
+.nav-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.4rem;
+  height: 1.2rem;
+  background: var(--secondary);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 700;
+  border-radius: 0.5rem;
+}
+
+/* ─── Tag / pill chips ─── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: 1px solid currentColor;
+}
+.chip-green {
+  color: var(--primary);
+  background: var(--primary-faint);
+  border-color: var(--primary);
+}
+.chip-gold {
+  color: var(--secondary);
+  background: var(--secondary-faint);
+  border-color: var(--secondary);
+}
+.chip-muted {
+  color: var(--muted);
+  background: var(--hover);
+  border-color: var(--border);
+}
+
+/* ─── Section header ─── */
+.section-header {
+  text-align: center;
+  padding-bottom: 0.5rem;
+}
+.section-header h1, .section-header h2 {
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.section-header p {
+  color: var(--accent);
+  margin-top: 0.5rem;
+}
+
+/* ─── Empty states ─── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--accent);
+}
+
+/* ─── Stats number ─── */
+.stat-number {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+/* ─── Nav pill (active nav indicator) ─── */
+.nav-active-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--secondary);
+  margin: 0 auto;
+}
+
+/* ─── Hero gradient bg ring ─── */
+.hero-glow {
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(ellipse at center, var(--green-glow) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
 }

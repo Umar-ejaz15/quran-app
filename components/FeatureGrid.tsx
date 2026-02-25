@@ -1,53 +1,129 @@
 "use client";
+
 import Link from 'next/link';
 import { BookOpen, Search, BookText, Layers, Hand, Globe, FileText } from 'lucide-react';
-import React from 'react';
 
 const features = [
   {
-    icon: <BookOpen size={28} />, title: 'Surahs', description: 'Browse all 114 chapters of the Quran', href: '/surahs',
+    icon: BookOpen,
+    title: 'Surahs',
+    description: 'Browse all 114 chapters of the Quran with translations and audio',
+    href: '/surahs',
+    badge: '114',
   },
   {
-    icon: <Layers size={28} />, title: 'Juz', description: 'Navigate by 30 divisions for daily reading', href: '/juz',
+    icon: Layers,
+    title: 'Juz',
+    description: 'Navigate by 30 equal divisions — perfect for daily reading',
+    href: '/juz',
+    badge: '30',
   },
   {
-    icon: <BookText size={28} />, title: 'Pages', description: 'Jump to any page of the Mushaf', href: '/pages',
+    icon: BookText,
+    title: 'Pages',
+    description: 'Jump to any Mushaf page with authentic page layout view',
+    href: '/pages',
+    badge: '604',
   },
   {
-    icon: <Search size={28} />, title: 'Search', description: 'Find any verse or phrase instantly', href: '/search',
+    icon: Search,
+    title: 'Search',
+    description: 'Find any verse or phrase across all translations instantly',
+    href: '/search',
   },
   {
-    icon: <Hand size={28} />, title: 'Sajda', description: 'Verses of prostration (Sajda)', href: '/sajda',
+    icon: Hand,
+    title: 'Sajda',
+    description: 'All 15 verses requiring prostration during recitation',
+    href: '/sajda',
+    badge: '15',
   },
   {
-    icon: <Globe size={28} />, title: 'Editions', description: 'Read in different languages & recitations', href: '/editions',
+    icon: Globe,
+    title: 'Editions',
+    description: 'Explore dozens of translations and audio reciters',
+    href: '/editions',
   },
   {
-    icon: <FileText size={28} />, title: 'About', description: 'Learn about this project', href: '/about',
+    icon: FileText,
+    title: 'About',
+    description: 'Learn about this project and its data sources',
+    href: '/about',
   },
 ];
 
 export default function FeatureGrid() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 px-2">
-      {features.map((feature, index) => (
-        <Link
-          key={index}
-          href={feature.href}
-          className="group p-6 md:p-8 rounded-2xl bg-(--card-bg) border border-(--border) hover:border-primary hover:shadow-xl transition-all duration-300 animate-fade-in border-t-4 border-t-transparent hover:border-t-secondary"
-          style={{ animationDelay: `${index * 60}ms` }}
-        >
-          <div className="w-12 h-12 md:w-14 md:h-14 mb-4 rounded-xl bg-linear-to-br from-primary/10 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform">
-            {feature.icon}
-          </div>
-          <h3 className="text-base md:text-lg font-bold mb-2 text-foreground group-hover:text-primary transition-colors">
-            {feature.title}
-          </h3>
-          <p className="text-sm text-(--accent) leading-relaxed">
-            {feature.description}
-          </p>
-        </Link>
-      ))}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
+      {features.map((feature, index) => {
+        const Icon = feature.icon;
+        return (
+          <Link
+            key={feature.href}
+            href={feature.href}
+            className="group relative flex flex-col p-5 md:p-6 rounded-2xl transition-all duration-200 animate-fade-in overflow-hidden"
+            style={{
+              background: 'var(--card-bg)',
+              border: '1px solid var(--border)',
+              animationDelay: `${index * 55}ms`,
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLAnchorElement;
+              el.style.borderColor = 'var(--primary)';
+              el.style.boxShadow = '0 8px 32px rgba(27,107,74,0.12)';
+              el.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLAnchorElement;
+              el.style.borderColor = 'var(--border)';
+              el.style.boxShadow = 'none';
+              el.style.transform = 'none';
+            }}
+          >
+            {/* Gold accent top line on hover */}
+            <div
+              className="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ background: 'linear-gradient(to right, var(--secondary), transparent)' }}
+            />
+
+            {/* Icon */}
+            <div
+              className="w-11 h-11 md:w-12 md:h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
+              style={{
+                background: 'var(--primary-faint)',
+                color: 'var(--primary)',
+              }}
+            >
+              <Icon size={22} />
+            </div>
+
+            {/* Title + badge */}
+            <div className="flex items-center gap-2 mb-2">
+              <h3
+                className="text-sm font-bold group-hover:text-[var(--primary)] transition-colors"
+                style={{ color: 'var(--foreground)' }}
+              >
+                {feature.title}
+              </h3>
+              {feature.badge && (
+                <span
+                  className="text-[10px] font-bold px-1.5 py-0.5 rounded-md"
+                  style={{
+                    background: 'var(--secondary-faint)',
+                    color: 'var(--secondary)',
+                  }}
+                >
+                  {feature.badge}
+                </span>
+              )}
+            </div>
+
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--muted)' }}>
+              {feature.description}
+            </p>
+          </Link>
+        );
+      })}
     </div>
   );
 }

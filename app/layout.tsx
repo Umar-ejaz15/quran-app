@@ -3,25 +3,22 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Al-Quran Al-Kareem - Read, Search & Explore the Holy Quran",
-    template: "%s | Al-Quran"
+    default: "Al-Quran Al-Kareem — Read, Search & Explore the Holy Quran",
+    template: "%s | Al-Quran Al-Kareem"
   },
-  description: "Read and explore the Holy Quran with multiple translations, search verses, navigate by Juz, Surah, or Page. A modern, clean interface for accessing the Quran online.",
+  description: "Read and explore the Holy Quran with multiple translations, audio recitations, and rich navigation by Surah, Juz, Page, and more.",
   keywords: ["Quran", "Al-Quran", "Holy Quran", "Islamic", "Quran Online", "Quran Translation", "Read Quran", "Quran Search"],
-  authors: [{ name: "Al-Quran" }],
+  authors: [{ name: "Al-Quran Al-Kareem" }],
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "Al-Quran",
   },
-  formatDetection: {
-    telephone: false,
-  },
+  formatDetection: { telephone: false },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://alquran.example.com",
     title: "Al-Quran Al-Kareem",
     description: "Read and explore the Holy Quran online",
     siteName: "Al-Quran",
@@ -39,9 +36,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <head>
@@ -49,11 +44,16 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Al-Quran" />
-        <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#2d5f4f" />
+        <meta name="theme-color" content="#1b6b4a" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className="antialiased">
         {children}

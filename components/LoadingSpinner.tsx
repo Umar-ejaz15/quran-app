@@ -1,15 +1,32 @@
 export default function LoadingSpinner() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-100 gap-4">
-      {/* Dual-ring spinner: outer gold, inner green */}
-      <div className="relative w-16 h-16">
-        <div className="absolute inset-0 border-4 border-(--secondary)/25 rounded-full" />
-        <div className="absolute inset-0 border-4 border-secondary border-t-transparent rounded-full animate-spin" />
-        <div className="absolute inset-2 border-4 border-primary/20 rounded-full" />
-        <div className="absolute inset-2 border-4 border-primary border-b-transparent rounded-full animate-spin"
-             style={{ animationDirection: 'reverse', animationDuration: '0.9s' }} />
+    <div className="flex flex-col items-center justify-center py-24 gap-5">
+      <div className="relative w-14 h-14">
+        <div
+          className="absolute inset-0 rounded-full border-4"
+          style={{ borderColor: 'var(--secondary)', opacity: 0.2 }}
+        />
+        <div
+          className="absolute inset-0 rounded-full border-4 animate-spin"
+          style={{ borderColor: 'var(--secondary)', borderTopColor: 'transparent' }}
+        />
+        <div
+          className="absolute inset-2 rounded-full border-4"
+          style={{ borderColor: 'var(--primary)', opacity: 0.15 }}
+        />
+        <div
+          className="absolute inset-2 rounded-full border-4 animate-spin"
+          style={{
+            borderColor: 'var(--primary)',
+            borderBottomColor: 'transparent',
+            animationDirection: 'reverse',
+            animationDuration: '0.85s',
+          }}
+        />
       </div>
-      <p className="text-sm text-(--accent) animate-pulse">Loading…</p>
+      <p className="text-sm font-medium animate-pulse" style={{ color: 'var(--muted)' }}>
+        Loading…
+      </p>
     </div>
   );
 }

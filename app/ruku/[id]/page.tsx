@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import AyahCard from '@/components/AyahCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -17,18 +18,15 @@ export default function RukuDetailPage() {
   const [loading, setLoading] = useState(true);
   const [selectedEdition, setSelectedEdition] = useState('en.asad');
   const [reciterEdition, setReciterEdition] = useState('ar.alafasy');
-  const [offset, setOffset] = useState<string>('');
-  const [limit, setLimit] = useState<string>('');
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     async function loadRuku() {
       try {
         setLoading(true);
-        const offVal = offset ? parseInt(offset, 10) : undefined;
-        const limitVal = limit ? parseInt(limit, 10) : undefined;
         const [arabicData, translationData] = await Promise.all([
-          getRukuWithOffset(rukuNumber, reciterEdition, offVal, limitVal),
-          getRukuWithOffset(rukuNumber, selectedEdition, offVal, limitVal),
+          getRukuWithOffset(rukuNumber, reciterEdition),
+          getRukuWithOffset(rukuNumber, selectedEdition),
         ]);
         setAyahs(arabicData.data.ayahs);
         setTranslations(translationData.data.ayahs);
@@ -39,7 +37,7 @@ export default function RukuDetailPage() {
       }
     }
     loadRuku();
-  }, [rukuNumber, selectedEdition, reciterEdition, offset, limit]);
+  }, [rukuNumber, selectedEdition, reciterEdition]);
 
   if (loading) {
     return (
@@ -51,84 +49,106 @@ export default function RukuDetailPage() {
   }
 
   return (
-    <div className="min-h-screen pattern-bg pb-20 md:pb-0">
+    <div className="min-h-screen pattern-bg pb-24 md:pb-8">
       <Navigation />
-      <main className="container mx-auto px-4 py-8 md:py-12">
-        <div className="mb-8 md:mb-12 p-6 md:p-8 rounded-2xl bg-[var(--card-bg)] border border-[var(--border)] shadow-lg animate-fade-in mx-2">
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 mb-4 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] text-white text-xl md:text-2xl font-bold shadow-md">
-              {rukuNumber}
+
+      <main className="container mx-auto px-4 md:px-6 py-6 md:py-10 max-w-4xl">
+
+        {/* Header */}
+        <div
+          className="rounded-2xl p-6 md:p-8 mb-6 animate-fade-in"
+          style={{
+            background: 'var(--card-bg)',
+            border: '1px solid var(--border)',
+            borderTop: '3px solid var(--secondary)',
+          }}
+        >
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div
+                className="w-14 h-14 rounded-xl flex items-center justify-center text-white text-2xl font-extrabold shadow-md"
+                style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))' }}
+              >
+                {rukuNumber}
+              </div>
+              <div>
+                <h1 className="text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--foreground)' }}>
+                  Ruku {rukuNumber}
+                </h1>
+                <p className="text-sm" style={{ color: 'var(--muted)' }}>
+                  {ayahs.length} verses
+                </p>
+              </div>
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold mb-2 text-[var(--foreground)]">
-              Ruku {rukuNumber}
-            </h1>
-            <p className="text-base md:text-lg text-[var(--accent)]">
-              {ayahs.length} verses
-            </p>
+
+            {/* Ruku navigation */}
+            <div className="flex items-center gap-2">
+              {rukuNumber > 1 && (
+                <a
+                  href={`/ruku/${rukuNumber - 1}`}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:-translate-y-0.5"
+                  style={{ background: 'var(--hover)', border: '1px solid var(--border)', color: 'var(--foreground)' }}
+                >
+                  <ChevronLeft size={16} /> Prev
+                </a>
+              )}
+              {rukuNumber < 556 && (
+                <a
+                  href={`/ruku/${rukuNumber + 1}`}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:-translate-y-0.5"
+                  style={{ background: 'var(--hover)', border: '1px solid var(--border)', color: 'var(--foreground)' }}
+                >
+                  Next <ChevronRight size={16} />
+                </a>
+              )}
+            </div>
           </div>
 
-          <div className="mt-6 pt-6 border-t border-[var(--border)] grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-[var(--accent)] mb-2">
-                Translation:
-              </label>
-              <select
-                value={selectedEdition}
-                onChange={(e) => setSelectedEdition(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg bg-[var(--hover)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
-              >
-                <option value="en.asad">English - Muhammad Asad</option>
-                <option value="en.sahih">English - Sahih International</option>
-                <option value="en.yusufali">English - Yusuf Ali</option>
-                <option value="en.pickthall">English - Pickthall</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-[var(--accent)] mb-2">
-                Reciter (audio):
-              </label>
-              <select
-                value={reciterEdition}
-                onChange={(e) => setReciterEdition(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg bg-[var(--hover)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
-              >
-                <option value="ar.alafasy">Mishary Alafasy</option>
-                <option value="ar.husary">Mahmoud Al-Husary</option>
-                <option value="ar.shaatree">Abu Bakr Ash-Shaatree</option>
-              </select>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium text-[var(--accent)] mb-2">
-                  Offset
-                </label>
-                <input
-                  type="number"
-                  min={0}
-                  value={offset}
-                  onChange={(e) => setOffset(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-[var(--hover)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-sm"
-                />
+          {/* Settings */}
+          <div className="mt-5 pt-5" style={{ borderTop: '1px solid var(--border)' }}>
+            <button
+              onClick={() => setShowSettings(v => !v)}
+              className="flex items-center gap-2 text-xs font-semibold"
+              style={{ color: 'var(--muted)' }}
+            >
+              {showSettings ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+              {showSettings ? 'Hide' : 'Change'} translation &amp; reciter
+            </button>
+
+            {showSettings && (
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 animate-fade-in">
+                <div>
+                  <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--muted)' }}>Translation</label>
+                  <select value={selectedEdition} onChange={e => setSelectedEdition(e.target.value)} className="form-control">
+                    <option value="en.asad">English — Muhammad Asad</option>
+                    <option value="en.sahih">English — Sahih International</option>
+                    <option value="en.yusufali">English — Yusuf Ali</option>
+                    <option value="en.pickthall">English — Pickthall</option>
+                    <option value="ur.jalandhry">Urdu — Jalandhry</option>
+                    <option value="id.indonesian">Indonesian</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--muted)' }}>Reciter</label>
+                  <select value={reciterEdition} onChange={e => setReciterEdition(e.target.value)} className="form-control">
+                    <option value="ar.alafasy">Mishary Alafasy</option>
+                    <option value="ar.husary">Mahmoud Al-Husary</option>
+                    <option value="ar.shaatree">Abu Bakr Ash-Shaatree</option>
+                  </select>
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-[var(--accent)] mb-2">
-                  Limit
-                </label>
-                <input
-                  type="number"
-                  min={1}
-                  value={limit}
-                  onChange={(e) => setLimit(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-[var(--hover)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-sm"
-                />
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
-        <div className="space-y-4 md:space-y-6 px-2">
+        {/* Ayahs */}
+        <div className="space-y-4 md:space-y-5">
           {ayahs.map((ayah, index) => (
-            <AyahCard key={ayah.number} ayah={ayah} translationText={translations[index]?.text} />
+            <AyahCard
+              key={ayah.number}
+              ayah={ayah}
+              translationText={translations[index]?.text}
+            />
           ))}
         </div>
       </main>

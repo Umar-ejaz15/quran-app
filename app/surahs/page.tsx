@@ -15,19 +15,30 @@ export default async function SurahsPage() {
     <div className="min-h-screen pattern-bg pb-20 md:pb-0">
       <Navigation />
 
-      <main className="container mx-auto px-4 py-8 md:py-12">
+      <main className="container mx-auto px-4 md:px-6 py-8 md:py-12">
+
         {/* Header */}
-        <div className="text-center mb-8 md:mb-12 animate-fade-in">
-          <h1 className="text-3xl md:text-5xl font-bold mb-3 text-gradient-hero px-4">
+        <div className="section-header mb-8 md:mb-10 animate-fade-in">
+          <h1
+            className="text-gradient-hero"
+            style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 800 }}
+          >
             The 114 Surahs
           </h1>
-          <p className="text-base md:text-lg text-(--accent) px-4">
+          <p className="mt-2 text-base" style={{ color: 'var(--muted)' }}>
             All chapters of the Holy Quran — Al-Quran Al-Kareem
           </p>
         </div>
 
-        {/* Surahs Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 px-2">
+        {/* Stats chips */}
+        <div className="flex flex-wrap gap-2 justify-center mb-8">
+          <span className="chip chip-green">114 Chapters</span>
+          <span className="chip chip-gold">6,236 Verses</span>
+          <span className="chip chip-muted">Makki &amp; Madani</span>
+        </div>
+
+        {/* Surahs list */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-5xl mx-auto">
           {surahs.map((surah) => (
             <SurahCard key={surah.number} surah={surah} />
           ))}

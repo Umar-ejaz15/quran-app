@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BookOpen, Search } from 'lucide-react';
+import { BookOpen, Search, ChevronRight } from 'lucide-react';
 import FeatureGrid from '@/components/FeatureGrid';
 import Navigation from '@/components/Navigation';
 
@@ -8,119 +8,188 @@ export default function Home() {
     <div className="min-h-screen pattern-bg pb-20 md:pb-0">
       <Navigation />
 
-      <main className="container mx-auto px-4 py-8 md:py-12">
+      <main className="container mx-auto px-4 md:px-6">
 
-        {/* Hero Section */}
-        <section className="text-center py-12 md:py-20 animate-fade-in">
+        {/* ─── Hero ─── */}
+        <section className="relative text-center py-12 md:py-22 animate-fade-in overflow-hidden">
+          {/* Radial glow */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'radial-gradient(ellipse 70% 60% at 50% 30%, var(--green-glow), transparent)',
+            }}
+          />
 
-          {/* Icon */}
-          <div className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-2xl bg-linear-to-br from-primary to-(--primary-dark) shadow-2xl">
-            <span className="text-4xl text-white font-bold" style={{ fontFamily: 'var(--font-amiri), serif' }}>ق</span>
+          {/* Quran emblem */}
+          <div
+            className="relative z-10 inline-flex items-center justify-center w-20 h-20 rounded-3xl mb-6 shadow-2xl"
+            style={{ background: 'linear-gradient(145deg, var(--primary), var(--primary-dark))' }}
+          >
+            <span
+              className="text-white font-bold"
+              style={{ fontFamily: 'Amiri Quran, Amiri, serif', fontSize: '2.5rem', lineHeight: 1 }}
+            >ق</span>
           </div>
 
           {/* Bismillah */}
-          <div className="mb-6 px-4">
-            <p className="bismillah">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
-            <p className="text-xs text-(--muted) mt-1 tracking-wide">In the Name of Allah, the Most Gracious, the Most Merciful</p>
+          <div className="relative z-10 mb-6">
+            <p className="bismillah" style={{ fontSize: '2rem' }}>
+              بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+            </p>
+            <p className="text-xs mt-2 tracking-widest uppercase" style={{ color: 'var(--muted)' }}>
+              In the Name of Allah — the Most Gracious, the Most Merciful
+            </p>
           </div>
 
-          <h1 className="text-4xl md:text-7xl font-bold mb-6 text-gradient-hero px-4">
+          {/* Title */}
+          <h1
+            className="relative z-10 font-extrabold mb-4 px-4 leading-tight text-gradient-hero"
+            style={{ fontSize: 'clamp(2.2rem, 6vw, 5rem)', letterSpacing: '-0.02em' }}
+          >
             Al-Quran Al-Kareem
           </h1>
-
-          <p className="text-lg md:text-2xl text-(--accent) mb-3 max-w-2xl mx-auto leading-relaxed px-4">
-            Read, Reflect, and Recite the Words of Allah
+          <p className="relative z-10 text-xs font-semibold tracking-[0.2em] uppercase mb-4" style={{ color: 'var(--secondary)' }}>
+            القرآن الكريم
           </p>
 
-          <p className="text-sm md:text-base text-(--muted) mb-10 md:mb-14 max-w-xl mx-auto px-4">
-            Explore the Holy Quran with multiple translations, audio recitations, and rich navigation tools.
+          <p
+            className="relative z-10 text-base md:text-lg mb-2 max-w-xl mx-auto leading-relaxed px-4"
+            style={{ color: 'var(--accent)' }}
+          >
+            Read, reflect upon, and recite the blessed words of the Holy Quran
+          </p>
+          <p
+            className="relative z-10 text-sm mb-10 max-w-lg mx-auto px-4"
+            style={{ color: 'var(--muted)' }}
+          >
+            Multiple translations &middot; Audio recitations &middot; Full Mushaf navigation
           </p>
 
-          {/* Quick Actions */}
-          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 px-4">
+          {/* CTAs */}
+          <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-3 px-4">
             <Link
               href="/surahs"
-              className="w-full sm:w-auto px-8 py-4 rounded-xl bg-linear-to-r from-primary to-(--primary-light) text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-white font-bold text-sm transition-all hover:-translate-y-0.5"
+              style={{ background: 'var(--primary)', boxShadow: '0 2px 12px var(--green-glow)' }}
             >
-              <BookOpen size={20} />
-              Begin Reading
+              <BookOpen size={17} />
+              Read the Quran
             </Link>
             <Link
               href="/search"
-              className="w-full sm:w-auto px-8 py-4 rounded-xl bg-(--card-bg) text-primary font-semibold border-2 border-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm border-2 hover-btn-outline"
+              style={{
+                background: 'var(--card-bg)',
+                color: 'var(--primary)',
+                borderColor: 'var(--primary)',
+              }}
             >
-              <Search size={20} />
+              <Search size={17} />
               Search Verses
             </Link>
           </div>
         </section>
 
-        {/* Decorative divider */}
-        <div className="islamic-divider my-6 md:my-10 px-4">
-          <span className="text-lg text-secondary opacity-50">۞</span>
+        {/* ─── Divider ─── */}
+        <div className="islamic-divider my-2 md:my-6">
+          <span className="text-xl" style={{ color: 'var(--secondary)', opacity: 0.5 }}>۩</span>
         </div>
 
-        {/* Features Grid */}
-        <section className="py-6 md:py-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-3 text-foreground px-4">
-            Explore the Holy Quran
-          </h2>
-          <p className="text-center text-(--muted) text-sm mb-8 md:mb-12 px-4">
-            Navigate by chapter, division, or verse — however you prefer to read
-          </p>
-          <FeatureGrid />
-        </section>
-
-        {/* Stats Section */}
-        <section className="py-6 md:py-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 px-2">
-            {stats.map((stat, index) => (
+        {/* ─── Stats Strip ─── */}
+        <section className="py-5 md:py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {stats.map((stat, i) => (
               <div
-                key={index}
-                className="p-5 md:p-6 rounded-xl bg-(--card-bg) border border-(--border) text-center animate-fade-in"
-                style={{ animationDelay: `${index * 80}ms` }}
+                key={i}
+                className="flex flex-col items-center justify-center p-5 rounded-2xl animate-fade-in text-center"
+                style={{
+                  background: 'var(--card-bg)',
+                  border: '1px solid var(--border)',
+                  animationDelay: `${i * 80}ms`,
+                }}
               >
-                <div className="text-3xl md:text-4xl font-bold text-gradient-hero mb-2">
-                  {stat.value}
+                <div className="stat-number text-gradient-hero mb-1">{stat.value}</div>
+                <div className="text-xs font-semibold tracking-wide uppercase" style={{ color: 'var(--muted)' }}>
+                  {stat.label}
                 </div>
-                <div className="text-xs md:text-sm text-(--accent)">{stat.label}</div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Inspirational verse */}
-        <section className="py-6 md:py-10 px-2">
-          <div className="max-w-3xl mx-auto p-6 md:p-10 rounded-2xl bg-(--card-bg) border border-(--border) text-center"
-               style={{ borderTop: '4px solid var(--secondary)' }}>
-            <p className="bismillah text-2xl md:text-3xl mb-4">
+        {/* ─── Explore ─── */}
+        <section className="py-5 md:py-10">
+          <div className="section-header mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--foreground)' }}>
+              Explore the Holy Quran
+            </h2>
+            <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
+              Navigate by Surah, Juz, Page, or verse — however you prefer to recite
+            </p>
+          </div>
+          <FeatureGrid />
+        </section>
+
+        {/* ─── Quranic Verse ─── */}
+        <section className="py-5 md:py-10">
+          <div
+            className="max-w-3xl mx-auto p-8 md:p-12 rounded-2xl text-center"
+            style={{
+              background: 'var(--card-bg)',
+              border: '1px solid var(--border)',
+              borderTop: '3px solid var(--secondary)',
+            }}
+          >
+            <p
+              className="arabic-text mb-5"
+              style={{ fontSize: '1.85rem', lineHeight: '3.2', color: 'var(--primary)' }}
+            >
               إِنَّ هَٰذَا ٱلْقُرْءَانَ يَهْدِى لِلَّتِى هِىَ أَقْوَمُ
             </p>
-            <p className="text-sm md:text-base text-(--accent) italic mb-2">
-              &ldquo;Indeed, this Qur&apos;an guides to that which is most upright...&rdquo;
+            <p className="text-sm md:text-base italic mb-2" style={{ color: 'var(--accent)' }}>
+              &ldquo;Indeed, this Qur&apos;an guides to that which is most upright…&rdquo;
             </p>
-            <p className="text-xs text-(--muted)">Surah Al-Isra, 17:9</p>
+            <p className="text-xs font-semibold tracking-wide" style={{ color: 'var(--muted)' }}>
+              Surah Al-Isra · Ayah 9
+            </p>
+
+            <div className="mt-6">
+              <Link
+                href="/surahs"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:underline"
+                style={{ color: 'var(--primary)' }}
+              >
+                Begin your recitation
+                <ChevronRight size={15} />
+              </Link>
+            </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-(--border) bg-(--card-bg) py-8 md:py-10 mt-8 md:mt-16">
-        <div className="container mx-auto px-4 text-center text-(--accent) space-y-2">
-          <p className="font-semibold text-primary">Al-Quran Al-Kareem • القرآن الكريم</p>
-          <p className="text-xs text-(--muted)">
-            Quranic text and data provided by{' '}
+      {/* ─── Footer ─── */}
+      <footer
+        className="mt-8 md:mt-16 py-8 md:py-10"
+        style={{ borderTop: '1px solid var(--border)', background: 'var(--card-bg)' }}
+      >
+        <div className="container mx-auto px-4 text-center space-y-2">
+          <p className="text-sm font-bold" style={{ color: 'var(--primary)' }}>
+            Al-Quran Al-Kareem &bull; القرآن الكريم
+          </p>
+          <p className="text-xs" style={{ color: 'var(--muted)' }}>
+            Quranic data provided with gratitude by{' '}
             <a
               href="https://alquran.cloud/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:underline"
+              className="hover:underline font-semibold"
+              style={{ color: 'var(--primary)' }}
             >
-              AlQuran Cloud API
+              AlQuran Cloud
             </a>
           </p>
-          <p className="text-xs text-(--muted)">
-            May Allah grant us beneficial knowledge • جزاكم الله خيرًا
+          <p className="text-xs" style={{ color: 'var(--subtle)' }}>
+            May Allah ﷻ accept from us and grant us beneficial knowledge &bull; جزاكم الله خيرًا
           </p>
         </div>
       </footer>
@@ -129,8 +198,8 @@ export default function Home() {
 }
 
 const stats = [
-  { value: '114', label: 'Surahs' },
-  { value: '6,236', label: 'Verses (Ayahs)' },
-  { value: '30', label: 'Juz Parts' },
-  { value: '604', label: 'Mushaf Pages' },
+  { value: '114',   label: 'Blessed Surahs'  },
+  { value: '6,236', label: 'Holy Verses'      },
+  { value: '30',    label: 'Juz Parts'        },
+  { value: '604',   label: 'Mushaf Pages'     },
 ];

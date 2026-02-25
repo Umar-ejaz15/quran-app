@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Search as SearchIcon, Loader2 } from 'lucide-react';
+import { Search as SearchIcon, Loader2, ChevronRight } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import { searchQuran } from '@/lib/api';
 import type { SearchResponse } from '@/types/quran';
@@ -17,7 +17,6 @@ export default function SearchPage() {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!query.trim()) return;
 
     try {
@@ -38,61 +37,77 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="min-h-screen pattern-bg pb-20 md:pb-0">
+    <div className="min-h-screen pattern-bg pb-24 md:pb-8">
       <Navigation />
-      
-      <main className="container mx-auto px-4 py-8 md:py-12">
+
+      <main className="container mx-auto px-4 md:px-6 py-8 md:py-12 max-w-4xl">
+
         {/* Header */}
-        <div className="text-center mb-8 md:mb-12 animate-fade-in">
-          <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent px-4">
+        <div className="section-header mb-8 animate-fade-in">
+          <h1 className="text-gradient-hero" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 800 }}>
             Search the Quran
           </h1>
-          <p className="text-base md:text-lg text-[var(--accent)] px-4">
-            Search through verses to find guidance
+          <p className="mt-2 text-base" style={{ color: 'var(--muted)' }}>
+            Find any verse or phrase across all translations
           </p>
         </div>
 
         {/* Search Form */}
-        <div className="max-w-3xl mx-auto mb-8 md:mb-12 animate-fade-in px-2">
+        <div
+          className="p-5 md:p-6 rounded-2xl mb-8 animate-fade-in"
+          style={{ background: 'var(--card-bg)', border: '1px solid var(--border)' }}
+        >
           <form onSubmit={handleSearch} className="space-y-4">
-            <div className="flex flex-col md:flex-row gap-4">
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Enter keyword to search..."
-                className="flex-1 px-4 md:px-6 py-3 md:py-4 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] text-[var(--foreground)] placeholder-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent text-sm md:text-base"
-              />
+            {/* Search input row */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex-1 relative">
+                <SearchIcon
+                  size={16}
+                  className="absolute left-3 top-1/2 -translate-y-1/2"
+                  style={{ color: 'var(--muted)' }}
+                />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                  placeholder="Enter keyword to search..."
+                  className="w-full pl-9 pr-4 py-3 rounded-xl text-sm"
+                  style={{
+                    background: 'var(--hover)',
+                    border: '1.5px solid var(--border)',
+                    color: 'var(--foreground)',
+                    outline: 'none',
+                  }}
+                  onFocus={e => { (e.target as HTMLInputElement).style.borderColor = 'var(--primary)'; }}
+                  onBlur={e => { (e.target as HTMLInputElement).style.borderColor = 'var(--border)'; }}
+                />
+              </div>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 md:px-8 py-3 md:py-4 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm md:text-base"
+                className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-light))' }}
               >
                 {loading ? (
-                  <>
-                    <Loader2 size={20} className="animate-spin" />
-                    Searching...
-                  </>
+                  <><Loader2 size={16} className="animate-spin" /> Searching…</>
                 ) : (
-                  <>
-                    <SearchIcon size={20} />
-                    Search
-                  </>
+                  <><SearchIcon size={16} /> Search</>
                 )}
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Filters */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-[var(--accent)] mb-2">
-                  Surah scope:
+                <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--muted)' }}>
+                  Surah scope
                 </label>
                 <select
                   value={surah}
-                  onChange={(e) => setSurah(e.target.value as 'all' | string)}
-                  className="w-full px-4 py-2 rounded-lg bg-[var(--card-bg)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+                  onChange={e => setSurah(e.target.value)}
+                  className="form-control"
                 >
-                  <option value="all">All surahs</option>
+                  <option value="all">All Surahs</option>
                   {Array.from({ length: 114 }).map((_, idx) => (
                     <option key={idx + 1} value={String(idx + 1)}>
                       Surah {idx + 1}
@@ -100,82 +115,97 @@ export default function SearchPage() {
                   ))}
                 </select>
               </div>
-
               <div>
-                <label className="block text-sm font-medium text-[var(--accent)] mb-2">
-                  Edition or language code:
+                <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--muted)' }}>
+                  Edition or language code
                 </label>
                 <input
                   type="text"
                   value={editionOrLanguage}
-                  onChange={(e) => setEditionOrLanguage(e.target.value)}
+                  onChange={e => setEditionOrLanguage(e.target.value)}
                   placeholder="e.g., en.asad or en"
-                  className="w-full px-4 py-2 rounded-lg bg-[var(--card-bg)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+                  className="form-control"
                 />
-                <p className="text-xs text-[var(--accent)] mt-1">
-                  Use an edition id (en.asad) or 2-letter language (en, fr). Default searches all English texts.
+                <p className="text-[10px] mt-1" style={{ color: 'var(--subtle)' }}>
+                  Edition id (en.asad) or 2-letter language code (en, ur, id)
                 </p>
               </div>
             </div>
           </form>
         </div>
 
-        {/* Results */}
+        {/* Loading */}
         {loading && (
-          <div className="flex items-center justify-center py-12">
-            <div className="relative w-16 h-16">
-              <div className="absolute top-0 left-0 w-full h-full border-4 border-[var(--primary)]/20 rounded-full"></div>
-              <div className="absolute top-0 left-0 w-full h-full border-4 border-[var(--primary)] border-t-transparent rounded-full animate-spin"></div>
+          <div className="flex items-center justify-center py-16">
+            <div className="relative w-12 h-12">
+              <div className="absolute inset-0 rounded-full border-4" style={{ borderColor: 'var(--primary)', opacity: 0.2 }} />
+              <div className="absolute inset-0 rounded-full border-4 animate-spin" style={{ borderColor: 'var(--primary)', borderTopColor: 'transparent' }} />
             </div>
           </div>
         )}
 
+        {/* Results */}
         {!loading && searched && (
-          <div className="max-w-4xl mx-auto">
+          <div>
             {results.length > 0 ? (
               <>
-                <div className="mb-6 text-center text-[var(--accent)]">
-                  Found {results.length} result{results.length !== 1 ? 's' : ''}
-                </div>
-                <div className="space-y-6">
+                <p className="text-center text-sm mb-6 font-semibold" style={{ color: 'var(--muted)' }}>
+                  {results.length} result{results.length !== 1 ? 's' : ''} found
+                </p>
+                <div className="space-y-4">
                   {results.map((result, index) => (
                     <div
                       key={index}
-                      className="p-6 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] hover:border-[var(--primary)]/30 transition-all animate-fade-in"
+                      className="p-5 md:p-6 rounded-2xl transition-all animate-fade-in"
+                      style={{
+                        background: 'var(--card-bg)',
+                        border: '1px solid var(--border)',
+                        animationDelay: `${index * 40}ms`,
+                      }}
                     >
-                      <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center justify-between mb-3 gap-2">
                         <Link
                           href={`/surah/${result.surah.number}`}
-                          className="text-lg font-bold text-[var(--primary)] hover:underline"
+                          className="text-sm font-bold hover:underline flex items-center gap-1.5"
+                          style={{ color: 'var(--primary)' }}
                         >
-                          {result.surah.englishName} ({result.surah.name})
+                          <span
+                            className="w-6 h-6 rounded-md flex items-center justify-center text-white text-xs font-bold"
+                            style={{ background: 'var(--primary)' }}
+                          >
+                            {result.surah.number}
+                          </span>
+                          {result.surah.englishName}
+                          <span style={{ color: 'var(--muted)' }}>·</span>
+                          <span style={{ fontFamily: 'Amiri Quran, Amiri, serif', color: 'var(--primary)' }}>
+                            {result.surah.name}
+                          </span>
                         </Link>
-                        <span className="text-sm text-[var(--accent)]">
-                          Ayah {result.numberInSurah}
-                        </span>
+                        <span className="chip chip-muted flex-shrink-0">Ayah {result.numberInSurah}</span>
                       </div>
-                      
-                      <p className="text-base leading-relaxed text-[var(--foreground)]">
+
+                      <p className="text-sm leading-relaxed mb-3" style={{ color: 'var(--foreground)' }}>
                         {result.text}
                       </p>
-                      
+
                       <Link
                         href={`/surah/${result.surah.number}`}
-                        className="inline-block mt-4 text-sm text-[var(--primary)] hover:underline"
+                        className="inline-flex items-center gap-1 text-xs font-semibold hover:underline"
+                        style={{ color: 'var(--primary)' }}
                       >
-                        Read full Surah →
+                        Read full Surah <ChevronRight size={12} />
                       </Link>
                     </div>
                   ))}
                 </div>
               </>
             ) : (
-              <div className="text-center py-12 px-4">
-                <SearchIcon className="w-16 h-16 mx-auto mb-4 text-[var(--accent)]" />
-                <p className="text-lg md:text-xl text-[var(--accent)]">
-                  No results found for &quot;{query}&quot;
+              <div className="empty-state">
+                <SearchIcon size={48} style={{ color: 'var(--border-strong)', marginBottom: '1rem' }} />
+                <p className="text-lg font-semibold" style={{ color: 'var(--accent)' }}>
+                  No results for &quot;{query}&quot;
                 </p>
-                <p className="text-xs md:text-sm text-[var(--accent)] mt-2">
+                <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
                   Try different keywords or check your spelling
                 </p>
               </div>
@@ -183,11 +213,15 @@ export default function SearchPage() {
           </div>
         )}
 
+        {/* Initial state */}
         {!searched && !loading && (
-          <div className="text-center py-12 px-4">
-            <SearchIcon className="w-16 h-16 mx-auto mb-4 text-[var(--accent)]" />
-            <p className="text-lg md:text-xl text-[var(--accent)]">
+          <div className="empty-state">
+            <SearchIcon size={48} style={{ color: 'var(--border-strong)', marginBottom: '1rem' }} />
+            <p className="text-base font-semibold" style={{ color: 'var(--accent)' }}>
               Enter a keyword to search
+            </p>
+            <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
+              Search across all English translations by default
             </p>
           </div>
         )}
