@@ -1,15 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams } from 'next/navigation';
-import { ChevronLeft, ChevronRight, FileText, LayoutGrid, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
+import {
+  ChevronLeft, ChevronRight, FileText, LayoutGrid, BookOpen,
+  ChevronDown, ChevronUp, Square, Volume2, Mic
+} from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import AyahCard from '@/components/AyahCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { getPageWithOffset } from '@/lib/api';
 import { Ayah, Surah } from '@/types/quran';
 
-// Convert Western digits to Arabic-Indic numerals
 function toArabicNumerals(n: number): string {
   const d = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
   return n.toString().split('').map(c => d[parseInt(c)] ?? c).join('');
@@ -28,36 +30,24 @@ function groupAyahsBySurah(
   surahsMap: Record<string, Surah>
 ): AyahGroup[] {
   if (!ayahs.length) return [];
-
   const surahNumbers = Object.keys(surahsMap).map(Number).sort((a, b) => a - b);
   const groups: AyahGroup[] = [];
   let currentSurahIdx = 0;
   let currentGroup: AyahGroup | null = null;
-
   ayahs.forEach((ayah, index) => {
     const isNewSurah = ayah.numberInSurah === 1;
-
     if (isNewSurah && index > 0) {
       currentSurahIdx = Math.min(currentSurahIdx + 1, surahNumbers.length - 1);
     }
-
     const surahNum = surahNumbers[currentSurahIdx];
     const surahInfo = surahsMap[surahNum?.toString()] ?? null;
-
     if (!currentGroup || isNewSurah) {
-      currentGroup = {
-        surahNumber: surahNum,
-        surahInfo,
-        ayahs: [],
-        translationAyahs: [],
-      };
+      currentGroup = { surahNumber: surahNum, surahInfo, ayahs: [], translationAyahs: [] };
       groups.push(currentGroup);
     }
-
     currentGroup.ayahs.push(ayah);
     currentGroup.translationAyahs.push(translations[index] ?? ayah);
   });
-
   return groups;
 }
 
@@ -75,6 +65,15 @@ export default function PageDetailPage() {
   const [showTranslation, setShowTranslation] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
+  // Page-level recitation state
+  const [isPlayingPage, setIsPlayingPage] = useState(false);
+  const [currentPlayingIdx, setCurrentPlayingIdx] = useState(-1);
+  const pageAudioRef = useRef<HTMLAudioElement | null>(null);
+  const isPlayingRef = useRef(false);
+  const ayahsRef = useRef<Ayah[]>([]);
+
+  useEffect(() => { ayahsRef.current = ayahs; }, [ayahs]);
+
   useEffect(() => {
     async function loadPage() {
       try {
@@ -83,7 +82,6 @@ export default function PageDetailPage() {
           getPageWithOffset(pageNumber, reciterEdition),
           getPageWithOffset(pageNumber, selectedEdition),
         ]);
-
         setAyahs(arabicData.data.ayahs);
         setTranslations(translationData.data.ayahs);
         setSurahsMap((arabicData.data.surahs as Record<string, Surah>) ?? {});
@@ -96,6 +94,52 @@ export default function PageDetailPage() {
     loadPage();
   }, [pageNumber, selectedEdition, reciterEdition]);
 
+  // Cleanup audio on page change / unmount
+  useEffect(() => {
+    return () => {
+      isPlayingRef.current = false;
+      if (pageAudioRef.current) {
+        pageAudioRef.current.pause();
+        pageAudioRef.current.src = '';
+      }
+    };
+  }, [pageNumber]);
+
+  const playNextAyah = useCallback((idx: number) => {
+    const list = ayahsRef.current;
+    if (!isPlayingRef.current || idx >= list.length) {
+      isPlayingRef.current = false;
+      setIsPlayingPage(false);
+      setCurrentPlayingIdx(-1);
+      return;
+    }
+    const ayah = list[idx];
+    const url = ayah.audio || ayah.audioSecondary?.[0];
+    if (!url) { playNextAyah(idx + 1); return; }
+    setCurrentPlayingIdx(idx);
+    if (!pageAudioRef.current) pageAudioRef.current = new Audio();
+    pageAudioRef.current.src = url;
+    pageAudioRef.current.onended = () => playNextAyah(idx + 1);
+    pageAudioRef.current.onerror = () => playNextAyah(idx + 1);
+    pageAudioRef.current.play().catch(() => playNextAyah(idx + 1));
+  }, []);
+
+  const startPagePlayback = () => {
+    isPlayingRef.current = true;
+    setIsPlayingPage(true);
+    playNextAyah(0);
+  };
+
+  const stopPagePlayback = () => {
+    isPlayingRef.current = false;
+    setIsPlayingPage(false);
+    setCurrentPlayingIdx(-1);
+    if (pageAudioRef.current) {
+      pageAudioRef.current.pause();
+      pageAudioRef.current.onended = null;
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen pattern-bg pb-20 md:pb-0">
@@ -106,6 +150,7 @@ export default function PageDetailPage() {
   }
 
   const groups = groupAyahsBySurah(ayahs, translations, surahsMap);
+  const hasAudio = ayahs.some(a => a.audio || a.audioSecondary?.[0]);
 
   return (
     <div className="min-h-screen pattern-bg pb-24 md:pb-8">
@@ -148,41 +193,28 @@ export default function PageDetailPage() {
                 <a
                   href={`/page/${pageNumber - 1}`}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:-translate-y-0.5"
-                  style={{
-                    background: 'var(--hover)',
-                    border: '1px solid var(--border)',
-                    color: 'var(--foreground)',
-                  }}
+                  style={{ background: 'var(--hover)', border: '1px solid var(--border)', color: 'var(--foreground)' }}
                 >
-                  <ChevronLeft size={16} />
-                  Prev
+                  <ChevronLeft size={16} /> Prev
                 </a>
               )}
               {pageNumber < 604 && (
                 <a
                   href={`/page/${pageNumber + 1}`}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:-translate-y-0.5"
-                  style={{
-                    background: 'var(--hover)',
-                    border: '1px solid var(--border)',
-                    color: 'var(--foreground)',
-                  }}
+                  style={{ background: 'var(--hover)', border: '1px solid var(--border)', color: 'var(--foreground)' }}
                 >
-                  Next
-                  <ChevronRight size={16} />
+                  Next <ChevronRight size={16} />
                 </a>
               )}
             </div>
           </div>
 
-          {/* View mode + Settings toggle */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mt-5 pt-5" style={{ borderTop: '1px solid var(--border)' }}>
+          {/* Controls row */}
+          <div className="flex flex-wrap items-center gap-3 mt-5 pt-5" style={{ borderTop: '1px solid var(--border)' }}>
 
             {/* View mode toggle */}
-            <div
-              className="flex rounded-xl overflow-hidden"
-              style={{ border: '1.5px solid var(--border)' }}
-            >
+            <div className="flex rounded-xl overflow-hidden" style={{ border: '1.5px solid var(--border)' }}>
               <button
                 onClick={() => setViewMode('mushaf')}
                 className="flex items-center gap-2 px-4 py-2 text-xs font-bold transition-all"
@@ -191,8 +223,7 @@ export default function PageDetailPage() {
                   color: viewMode === 'mushaf' ? 'white' : 'var(--accent)',
                 }}
               >
-                <BookOpen size={14} />
-                Mushaf View
+                <BookOpen size={14} /> Mushaf
               </button>
               <button
                 onClick={() => setViewMode('cards')}
@@ -203,10 +234,39 @@ export default function PageDetailPage() {
                   borderLeft: '1.5px solid var(--border)',
                 }}
               >
-                <LayoutGrid size={14} />
-                Cards View
+                <LayoutGrid size={14} /> Cards
               </button>
             </div>
+
+            {/* Page Recitation button */}
+            {hasAudio && !isPlayingPage && (
+              <button
+                onClick={startPagePlayback}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all"
+                style={{ background: 'var(--primary)', color: 'white', boxShadow: '0 2px 12px var(--green-glow)' }}
+                title="Recite the entire page in sequence"
+              >
+                <Mic size={14} /> Recite Page
+              </button>
+            )}
+            {hasAudio && isPlayingPage && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={stopPagePlayback}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold"
+                  style={{ background: 'var(--secondary)', color: 'white' }}
+                >
+                  <Square size={13} /> Stop
+                </button>
+                <span
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold animate-fade-in"
+                  style={{ background: 'var(--primary-faint)', color: 'var(--primary)', border: '1px solid var(--primary)' }}
+                >
+                  <Volume2 size={13} />
+                  Verse {currentPlayingIdx + 1} / {ayahs.length}
+                </span>
+              </div>
+            )}
 
             {/* Settings toggle */}
             <button
@@ -227,14 +287,8 @@ export default function PageDetailPage() {
           {showSettings && (
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 animate-fade-in">
               <div>
-                <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--muted)' }}>
-                  Translation
-                </label>
-                <select
-                  value={selectedEdition}
-                  onChange={e => setSelectedEdition(e.target.value)}
-                  className="form-control"
-                >
+                <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--muted)' }}>Translation</label>
+                <select value={selectedEdition} onChange={e => setSelectedEdition(e.target.value)} className="form-control">
                   <option value="en.asad">English — Muhammad Asad</option>
                   <option value="en.sahih">English — Sahih International</option>
                   <option value="en.yusufali">English — Yusuf Ali</option>
@@ -244,12 +298,10 @@ export default function PageDetailPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--muted)' }}>
-                  Reciter (for audio)
-                </label>
+                <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--muted)' }}>Reciter (for audio)</label>
                 <select
                   value={reciterEdition}
-                  onChange={e => setReciterEdition(e.target.value)}
+                  onChange={e => { stopPagePlayback(); setReciterEdition(e.target.value); }}
                   className="form-control"
                 >
                   <option value="ar.alafasy">Mishary Alafasy</option>
@@ -264,28 +316,19 @@ export default function PageDetailPage() {
         {/* ── MUSHAF VIEW ── */}
         {viewMode === 'mushaf' && (
           <div className="animate-draw-in">
-            {/* The Mushaf Page */}
             <div className="mushaf-page mx-auto max-w-3xl">
 
-              {/* Mushaf page header */}
               <div className="mushaf-header">
-                <span className="mushaf-page-number">
-                  ﴿ Page {pageNumber} ﴾
-                </span>
+                <span className="mushaf-page-number">﴿ Page {pageNumber} ﴾</span>
               </div>
 
-              {/* Verse groups by surah */}
               {groups.map((group, gIdx) => (
                 <div key={gIdx}>
-                  {/* Surah title */}
                   {group.surahInfo && (
                     <div className="text-center my-4">
                       <div
                         className="inline-block px-8 py-2 rounded-lg"
-                        style={{
-                          background: 'var(--mushaf-secondary)',
-                          border: '1px solid var(--mushaf-border)',
-                        }}
+                        style={{ background: 'var(--mushaf-secondary)', border: '1px solid var(--mushaf-border)' }}
                       >
                         <span className="mushaf-surah-title" style={{ display: 'block', margin: 0 }}>
                           سُورَةُ {group.surahInfo.name}
@@ -294,8 +337,6 @@ export default function PageDetailPage() {
                           {group.surahInfo.englishName} · {group.surahInfo.numberOfAyahs} verses
                         </span>
                       </div>
-
-                      {/* Bismillah (not for Al-Fatiha and At-Tawbah) */}
                       {group.surahNumber !== 1 && group.surahNumber !== 9 && (
                         <div className="mushaf-bismillah mt-3">
                           بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
@@ -304,23 +345,32 @@ export default function PageDetailPage() {
                     </div>
                   )}
 
-                  {/* Continuous verse text */}
                   <p className="mushaf-text">
-                    {group.ayahs.map((ayah) => (
-                      <span key={ayah.number}>
-                        {ayah.text}
-                        {' '}
-                        <span className="mushaf-verse-number">
-                          ﴿{toArabicNumerals(ayah.numberInSurah)}﴾
+                    {group.ayahs.map((ayah) => {
+                      const globalIdx = ayahs.findIndex(a => a.number === ayah.number);
+                      const active = isPlayingPage && currentPlayingIdx === globalIdx;
+                      return (
+                        <span
+                          key={ayah.number}
+                          style={active ? {
+                            background: 'rgba(12,81,48,0.14)',
+                            borderRadius: '4px',
+                            padding: '0 3px',
+                          } : undefined}
+                        >
+                          {ayah.text}
+                          {' '}
+                          <span className="mushaf-verse-number">
+                            ﴿{toArabicNumerals(ayah.numberInSurah)}﴾
+                          </span>
+                          {' '}
                         </span>
-                        {' '}
-                      </span>
-                    ))}
+                      );
+                    })}
                   </p>
                 </div>
               ))}
 
-              {/* Mushaf page footer */}
               <div className="mushaf-footer">
                 <span className="mushaf-page-number">
                   {pageNumber} · Juz {ayahs[0]?.juz ?? '—'}
@@ -343,25 +393,17 @@ export default function PageDetailPage() {
                 {showTranslation ? 'Hide' : 'Show'} Translation
               </button>
 
-              {/* Translations per verse */}
               {showTranslation && (
                 <div
                   className="mt-3 rounded-2xl overflow-hidden animate-fade-in"
-                  style={{
-                    background: 'var(--card-bg)',
-                    border: '1px solid var(--border)',
-                  }}
+                  style={{ background: 'var(--card-bg)', border: '1px solid var(--border)' }}
                 >
                   {groups.map((group, gIdx) => (
                     <div key={gIdx}>
                       {group.surahInfo && (
                         <div
                           className="px-6 py-3 text-sm font-bold"
-                          style={{
-                            background: 'var(--hover)',
-                            borderBottom: '1px solid var(--border)',
-                            color: 'var(--primary)',
-                          }}
+                          style={{ background: 'var(--hover)', borderBottom: '1px solid var(--border)', color: 'var(--primary)' }}
                         >
                           {group.surahInfo.englishName} — {group.surahInfo.englishNameTranslation}
                         </div>
@@ -370,9 +412,7 @@ export default function PageDetailPage() {
                         <div
                           key={ayah.number}
                           className="px-6 py-4 flex gap-4"
-                          style={{
-                            borderBottom: idx < group.ayahs.length - 1 ? '1px solid var(--border)' : 'none',
-                          }}
+                          style={{ borderBottom: idx < group.ayahs.length - 1 ? '1px solid var(--border)' : 'none' }}
                         >
                           <div
                             className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5"
@@ -397,11 +437,18 @@ export default function PageDetailPage() {
         {viewMode === 'cards' && (
           <div className="space-y-4 md:space-y-5 animate-fade-in">
             {ayahs.map((ayah, index) => (
-              <AyahCard
+              <div
                 key={ayah.number}
-                ayah={ayah}
-                translationText={translations[index]?.text}
-              />
+                style={isPlayingPage && currentPlayingIdx === index ? {
+                  outline: '2px solid var(--primary)',
+                  borderRadius: '1rem',
+                } : undefined}
+              >
+                <AyahCard
+                  ayah={ayah}
+                  translationText={translations[index]?.text}
+                />
+              </div>
             ))}
           </div>
         )}
@@ -412,11 +459,7 @@ export default function PageDetailPage() {
             <a
               href={`/page/${pageNumber - 1}`}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:-translate-y-0.5"
-              style={{
-                background: 'var(--card-bg)',
-                border: '1px solid var(--border)',
-                color: 'var(--foreground)',
-              }}
+              style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', color: 'var(--foreground)' }}
             >
               <ChevronLeft size={16} />
               Page {pageNumber - 1}
@@ -427,11 +470,7 @@ export default function PageDetailPage() {
             <a
               href={`/page/${pageNumber + 1}`}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:-translate-y-0.5"
-              style={{
-                background: 'var(--card-bg)',
-                border: '1px solid var(--border)',
-                color: 'var(--foreground)',
-              }}
+              style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', color: 'var(--foreground)' }}
             >
               Page {pageNumber + 1}
               <ChevronRight size={16} />

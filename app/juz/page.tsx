@@ -8,9 +8,33 @@ export const metadata = {
   description: 'Study the Quran by Juz — 30 equal parts for daily reading.',
 };
 
+const JUZ_COUNT = 30;
+
 export default async function JuzPage() {
-  const metaData = await getMeta();
-  const juzs = metaData.data.juzs.references;
+  let juzs: Array<{ index: number; start: string; end: string }> = [];
+
+  try {
+    const meta = await getMeta();
+    const refs = meta?.data?.juzs?.references;
+    if (Array.isArray(refs) && refs.length > 0) {
+      juzs = refs.map((j, i) => ({
+        index: (j as { index?: number; number?: number }).index ?? (j as { index?: number; number?: number }).number ?? i + 1,
+        start: (j as { start?: string; from?: string }).start || (j as { start?: string; from?: string }).from || '',
+        end: (j as { end?: string; to?: string }).end || (j as { end?: string; to?: string }).to || '',
+      }));
+    }
+  } catch {
+    // fall through to fallback
+  }
+
+  // Fallback: generate 1–30 if API returned nothing or wrong format
+  if (juzs.length === 0) {
+    juzs = Array.from({ length: JUZ_COUNT }, (_, i) => ({
+      index: i + 1,
+      start: '',
+      end: '',
+    }));
+  }
 
   return (
     <div className="min-h-screen pattern-bg pb-20 md:pb-0">
@@ -36,35 +60,29 @@ export default async function JuzPage() {
 
         {/* Juz Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4 max-w-5xl mx-auto">
-          {Array.isArray(juzs) && juzs.length > 0 ? (
-            juzs.map((juz, i) => (
-              <Link
-                key={`juz-${i}`}
-                href={`/juz/${juz.index ?? i + 1}`}
-                className="group p-5 rounded-2xl text-center animate-fade-in hover-card"
-                style={{
-                  background: 'var(--card-bg)',
-                  border: '1px solid var(--border)',
-                  animationDelay: `${(i % 10) * 40}ms`,
-                }}
+          {juzs.map((juz, i) => (
+            <Link
+              key={juz.index}
+              href={`/juz/${juz.index}`}
+              className="group p-5 rounded-2xl text-center animate-fade-in hover-card"
+              style={{
+                background: 'var(--card-bg)',
+                border: '1px solid var(--border)',
+                animationDelay: `${(i % 10) * 40}ms`,
+              }}
+            >
+              <div
+                className="text-3xl font-extrabold mb-2 group-hover:scale-110 transition-transform text-gradient-primary"
+                style={{ lineHeight: 1 }}
               >
-                <div
-                  className="text-3xl font-extrabold mb-2 group-hover:scale-110 transition-transform text-gradient-primary"
-                  style={{ lineHeight: 1 }}
-                >
-                  {juz.index ?? i + 1}
-                </div>
-                <div className="text-[10px] space-y-0.5" style={{ color: 'var(--muted)' }}>
-                  <div className="truncate">From {juz.start || juz.from || '—'}</div>
-                  <div className="truncate">To {juz.end || juz.to || '—'}</div>
-                </div>
-              </Link>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-12" style={{ color: 'var(--accent)' }}>
-              No Juz data found.
-            </div>
-          )}
+                {juz.index}
+              </div>
+              <div className="text-[10px] space-y-0.5" style={{ color: 'var(--muted)' }}>
+                {juz.start ? <div className="truncate">From {juz.start}</div> : null}
+                {juz.end   ? <div className="truncate">To {juz.end}</div>   : null}
+              </div>
+            </Link>
+          ))}
         </div>
 
         {/* Info card */}

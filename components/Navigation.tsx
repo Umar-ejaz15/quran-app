@@ -4,21 +4,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Home, BookOpen, Layers, Search, Hand, Info,
-  FileText, Globe2, BookMarked, ScrollText, Layers3
+  FileText
 } from 'lucide-react';
 
 const allLinks = [
-  { href: '/',         icon: Home,       label: 'Home'      },
-  { href: '/surahs',   icon: BookOpen,   label: 'Surahs'    },
-  { href: '/juz',      icon: Layers,     label: 'Juz'       },
-  { href: '/pages',    icon: FileText,   label: 'Pages'     },
-  { href: '/search',   icon: Search,     label: 'Search'    },
-  { href: '/manzil',   icon: BookMarked, label: 'Manzil'    },
-  { href: '/ruku',     icon: ScrollText, label: 'Ruku'      },
-  { href: '/hizb',     icon: Layers3,    label: 'Hizb'      },
-  { href: '/sajda',    icon: Hand,       label: 'Sajda'     },
-  { href: '/editions', icon: Globe2,     label: 'Editions'  },
-  { href: '/about',    icon: Info,       label: 'About'     },
+  { href: '/',       icon: Home,     label: 'Home'   },
+  { href: '/surahs', icon: BookOpen, label: 'Surahs' },
+  { href: '/juz',    icon: Layers,   label: 'Juz'    },
+  { href: '/pages',  icon: FileText, label: 'Pages'  },
+  { href: '/search', icon: Search,   label: 'Search' },
+  { href: '/sajda',  icon: Hand,     label: 'Sajda'  },
+  { href: '/about',  icon: Info,     label: 'About'  },
 ];
 
 export default function Navigation() {
@@ -54,7 +50,7 @@ export default function Navigation() {
             >
               <span
                 className="text-white font-bold"
-                style={{ fontFamily: 'Amiri Quran, Amiri, serif', fontSize: '1.1rem' }}
+                style={{ fontFamily: 'Scheherazade New, Noto Naskh Arabic, Amiri Quran, Amiri, serif', fontSize: '1.1rem' }}
               >ق</span>
             </div>
             <div className="leading-tight">
@@ -112,7 +108,7 @@ export default function Navigation() {
           >
             <span
               className="text-white font-bold"
-              style={{ fontFamily: 'Amiri Quran, Amiri, serif', fontSize: '0.85rem' }}
+              style={{ fontFamily: 'Scheherazade New, Noto Naskh Arabic, Amiri Quran, Amiri, serif', fontSize: '0.85rem' }}
             >ق</span>
           </div>
           <div className="leading-tight">
