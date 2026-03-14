@@ -91,7 +91,7 @@ export default function Home() {
                 <span
                   style={{
                     fontFamily: 'var(--font-arabic)',
-                    fontSize: 'clamp(1rem, 2vw, 1.4rem)',
+                    fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)',
                     color: 'var(--primary)',
                     direction: 'rtl',
                     lineHeight: 1.8,

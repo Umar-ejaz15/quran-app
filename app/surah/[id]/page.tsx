@@ -73,7 +73,7 @@ export default function SurahDetailPage() {
           style={{
             background: 'var(--card-bg)',
             border: '1px solid var(--border)',
-            borderTop: '3px solid var(--secondary)',
+
             boxShadow: '0 2px 16px rgba(0,0,0,0.05)',
           }}
         >
