@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://your-domain.com', // TODO: Replace with your actual domain
-  generateRobotsTxt: true, // (optional)
+  siteUrl: 'https://www.noorulquraan.com',
+  generateRobotsTxt: true,
   // ...other options
 };

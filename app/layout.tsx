@@ -41,6 +41,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Canonical tag for technical SEO */}
+        <link rel="canonical" href="https://www.noorulquraan.com/" />
         {/* Google site verification for SEO */}
         <meta name="google-site-verification" content="QR53olZK-kEVM-9UQuyGAdJKPgbCunhTTnub23K_V54" />
         <meta name="application-name" content="Al-Quran" />
