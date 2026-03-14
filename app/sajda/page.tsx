@@ -1,5 +1,5 @@
-import { Hand } from 'lucide-react';
 import Navigation from '@/components/Navigation';
+import PageHeader from '@/components/PageHeader';
 import AyahCard from '@/components/AyahCard';
 import { getSajdas } from '@/lib/api';
 
@@ -13,48 +13,48 @@ export default async function SajdaPage() {
   const translationData = await getSajdas('en.asad');
 
   return (
-    <div className="min-h-screen pattern-bg pb-20 md:pb-0">
+    <div className="min-h-screen pb-24 md:pb-8" style={{ background: 'var(--background)' }}>
       <Navigation />
 
-      <main className="container mx-auto px-4 md:px-6 py-8 md:py-12 max-w-4xl">
-
-        {/* Header */}
-        <div className="section-header mb-8 md:mb-10 animate-fade-in">
-          <div
-            className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 shadow-md"
-            style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))' }}
+      <PageHeader
+        title="Sajda Verses"
+        subtitle="Verses of prostration — moments of deepened connection with Allah"
+        badge={
+          <span
+            className="px-3 py-1 rounded-full text-xs font-bold"
+            style={{
+              background: 'rgba(242,181,11,0.15)',
+              color: '#f2b50b',
+              border: '1px solid rgba(242,181,11,0.25)',
+            }}
           >
-            <Hand className="text-white" size={26} />
-          </div>
-          <h1 className="text-gradient-hero" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 800 }}>
-            Sajda Verses
-          </h1>
-          <p className="mt-2 text-base" style={{ color: 'var(--muted)' }}>
-            Verses requiring prostration during recitation
-          </p>
-          <div className="mt-3">
-            <span className="chip chip-gold">{arabicData.data.ayahs.length} Sajda verses</span>
-          </div>
-        </div>
+            {arabicData.data.ayahs.length} Verses
+          </span>
+        }
+      />
+
+      <main className="container mx-auto px-4 md:px-6 py-10 md:py-14 max-w-4xl">
 
         {/* Info */}
         <div
-          className="mb-8 p-5 rounded-2xl animate-fade-in"
-          style={{
-            background: 'var(--card-bg)',
-            border: '1px solid var(--border)',
-            borderLeft: '3px solid var(--secondary)',
-          }}
+          className="mb-8 p-5 md:p-6 rounded-2xl animate-fade-in"
+          style={{ background: 'var(--card-bg)', border: '1px solid var(--border)' }}
         >
-          <h2 className="text-base font-bold mb-1.5" style={{ color: 'var(--primary)' }}>About Sajda</h2>
-          <p className="text-sm leading-relaxed" style={{ color: 'var(--accent)' }}>
-            When reciting or hearing certain verses, prostration (Sajda Tilawa) is recommended.
-            These sacred moments deepen our connection with Allah.
+          <h2
+            className="text-xs font-bold tracking-widest uppercase mb-2"
+            style={{ color: 'var(--muted)', letterSpacing: '0.12em' }}
+          >
+            About Sajda Tilawa
+          </h2>
+          <p className="text-sm leading-relaxed" style={{ color: 'var(--accent)', fontFamily: 'Georgia, serif' }}>
+            When reciting or hearing certain verses of the Quran, prostration (Sajda Tilawa)
+            is recommended. These sacred moments deepen our connection with Allah ﷻ and
+            are a sign of gratitude and submission.
           </p>
         </div>
 
         {/* Sajda Verses */}
-        <div className="space-y-4 md:space-y-5">
+        <div className="space-y-3 md:space-y-4">
           {arabicData.data.ayahs.map((ayah, index) => (
             <AyahCard
               key={ayah.number}
@@ -63,6 +63,7 @@ export default async function SajdaPage() {
             />
           ))}
         </div>
+
       </main>
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { Hand, Play, Pause, Volume2 } from 'lucide-react';
+import { Hand, Play, Pause } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { Ayah } from '@/types/quran';
 
@@ -36,68 +36,92 @@ export default function AyahCard({ ayah, translationText }: AyahCardProps) {
 
   return (
     <article
-      className="rounded-2xl overflow-hidden animate-fade-in"
+      className="rounded-2xl animate-fade-in ayah-card"
       style={{
         background: 'var(--card-bg)',
         border: '1px solid var(--border)',
-        boxShadow: '0 1px 8px rgba(0,0,0,0.04)',
       }}
     >
-      {/* ── Header strip ── */}
-      <div
-        className="flex items-center justify-between px-5 py-2.5"
-        style={{
-          background: 'var(--hover)',
-          borderBottom: '1px solid var(--border)',
-        }}
-      >
+      {/* ── Verse number + meta row ── */}
+      <div className="flex items-center justify-between px-5 pt-4 pb-3">
         <div className="flex items-center gap-3">
-          {/* Verse number badge */}
+          {/* Verse number — clean circle */}
           <div
-            className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-            style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))' }}
+            className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
+            style={{
+              background: 'var(--primary-faint)',
+              color: 'var(--primary)',
+              border: '1px solid var(--border)',
+            }}
           >
             {ayah.numberInSurah}
           </div>
 
-          <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--muted)' }}>
-            <span
-              className="font-semibold"
-              style={{ color: 'var(--accent)' }}
-            >
-              Juz {ayah.juz}
-            </span>
-            <span style={{ opacity: 0.4 }}>·</span>
-            <span>Page {ayah.page}</span>
-          </div>
+          <span className="text-xs" style={{ color: 'var(--muted)' }}>
+            Juz {ayah.juz} · Page {ayah.page}
+          </span>
         </div>
 
-        {ayah.sajda && (
-          <span
-            className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold"
-            style={{
-              background: 'var(--secondary-faint)',
-              color: 'var(--secondary)',
-              border: '1px solid var(--secondary)',
-            }}
-          >
-            <Hand size={11} />
-            Sajda
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {ayah.sajda && (
+            <span
+              className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold"
+              style={{
+                background: 'var(--secondary-faint)',
+                color: 'var(--secondary-dark)',
+              }}
+            >
+              <Hand size={10} />
+              Sajda
+            </span>
+          )}
+
+          {/* Audio button */}
+          {audioUrl && (
+            <button
+              onClick={togglePlay}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+              style={
+                isPlaying
+                  ? { background: 'var(--primary)', color: 'white', boxShadow: '0 2px 8px var(--primary-glow)' }
+                  : { background: 'var(--primary-faint)', color: 'var(--primary)', border: '1px solid var(--primary)' }
+              }
+              aria-label={isPlaying ? 'Pause recitation' : 'Play recitation'}
+            >
+              {isPlaying ? <Pause size={11} /> : <Play size={11} />}
+              {isPlaying ? 'Pause' : 'Play'}
+            </button>
+          )}
+        </div>
       </div>
 
+      {/* Audio progress bar — only when playing, sits below header row */}
+      {isPlaying && (
+        <div className="px-5 pb-2">
+          <div
+            className="h-0.5 rounded-full overflow-hidden"
+            style={{ background: 'var(--border)' }}
+          >
+            <div
+              className="h-full rounded-full transition-all duration-300"
+              style={{
+                width: `${progress}%`,
+                background: 'var(--primary)',
+              }}
+            />
+          </div>
+        </div>
+      )}
+
       {/* ── Arabic text ── */}
-      <div
-        className="px-5 py-6"
-        style={{
-          borderLeft: '3px solid var(--secondary)',
-          background: 'linear-gradient(to right, var(--secondary-faint), transparent 40%)',
-        }}
-      >
+      <div className="px-6 py-5">
         <p
           className="arabic-text select-text"
-          style={{ color: 'var(--foreground)', fontSize: '1.7rem', lineHeight: '3' }}
+          style={{
+            color: 'var(--foreground)',
+            fontSize: '1.75rem',
+            lineHeight: '3.2',
+          }}
         >
           {ayah.text}
         </p>
@@ -105,107 +129,56 @@ export default function AyahCard({ ayah, translationText }: AyahCardProps) {
 
       {/* ── Translation ── */}
       {translationText && (
-        <div className="px-5 pb-4">
-          <div
-            className="flex items-center gap-3 my-3"
-          >
-            <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
-            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--muted)' }}>
-              Translation
-            </span>
-            <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
-          </div>
+        <div
+          className="px-6 py-4"
+          style={{ borderTop: '1px solid var(--border)' }}
+        >
           <p
-            className="text-sm md:text-base leading-relaxed italic"
-            style={{ color: 'var(--accent)' }}
+            className="text-sm md:text-base leading-relaxed"
+            style={{
+              color: 'var(--muted)',
+              fontFamily: 'Georgia, serif',
+              fontStyle: 'italic',
+            }}
           >
             {translationText}
           </p>
         </div>
       )}
 
-      {/* ── Footer: audio + chips ── */}
+      {/* ── Footer metadata ── */}
       <div
-        className="px-5 py-3 flex flex-wrap items-center justify-between gap-3"
+        className="px-6 py-3 flex items-center gap-2 flex-wrap"
         style={{ borderTop: '1px solid var(--border)' }}
       >
-        {audioUrl ? (
-          <div className="flex items-center gap-3">
-            <button
-              onClick={togglePlay}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all"
-              style={
-                isPlaying
-                  ? {
-                      background: 'var(--primary)',
-                      color: 'white',
-                      boxShadow: '0 2px 12px var(--green-glow)',
-                    }
-                  : {
-                      background: 'var(--hover)',
-                      color: 'var(--foreground)',
-                      border: '1px solid var(--border)',
-                    }
-              }
-              aria-label={isPlaying ? 'Pause recitation' : 'Play recitation'}
-            >
-              {isPlaying ? <Pause size={14} /> : <Play size={14} />}
-              {isPlaying ? 'Pause' : 'Listen'}
-            </button>
-
-            {isPlaying && (
-              <div className="flex items-center gap-2">
-                <Volume2 size={13} style={{ color: 'var(--primary)' }} />
-                <div
-                  className="w-20 h-1.5 rounded-full overflow-hidden"
-                  style={{ background: 'var(--border)' }}
-                >
-                  <div
-                    className="h-full rounded-full transition-all"
-                    style={{
-                      width: `${progress}%`,
-                      background: 'linear-gradient(to right, var(--primary), var(--secondary))',
-                    }}
-                  />
-                </div>
-              </div>
-            )}
-
-            <audio
-              ref={audioRef}
-              src={audioUrl}
-              preload="none"
-              onEnded={handleEnded}
-              onTimeUpdate={handleTimeUpdate}
-              className="hidden"
-            />
-          </div>
-        ) : (
-          <div />
-        )}
-
-        {/* Metadata chips */}
-        <div className="flex flex-wrap items-center gap-1.5 text-xs" style={{ color: 'var(--muted)' }}>
+        {[
+          `Manzil ${ayah.manzil}`,
+          `Ruku ${ayah.ruku}`,
+          `Hizb ${Math.ceil(ayah.hizbQuarter / 4)}`,
+        ].map(label => (
           <span
-            className="px-2 py-0.5 rounded-md"
-            style={{ background: 'var(--hover)', border: '1px solid var(--border)' }}
+            key={label}
+            className="text-xs px-2 py-0.5 rounded"
+            style={{
+              color: 'var(--subtle)',
+              background: 'var(--hover)',
+            }}
           >
-            Manzil {ayah.manzil}
+            {label}
           </span>
-          <span
-            className="px-2 py-0.5 rounded-md"
-            style={{ background: 'var(--hover)', border: '1px solid var(--border)' }}
-          >
-            Ruku {ayah.ruku}
-          </span>
-          <span
-            className="px-2 py-0.5 rounded-md"
-            style={{ background: 'var(--hover)', border: '1px solid var(--border)' }}
-          >
-            Hizb {Math.ceil(ayah.hizbQuarter / 4)}
-          </span>
-        </div>
+        ))}
       </div>
+
+      {audioUrl && (
+        <audio
+          ref={audioRef}
+          src={audioUrl}
+          preload="none"
+          onEnded={handleEnded}
+          onTimeUpdate={handleTimeUpdate}
+          className="hidden"
+        />
+      )}
     </article>
   );
 }

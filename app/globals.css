@@ -752,6 +752,15 @@ a, button, input, select, textarea {
 
 /* verse-showcase replaced with full-bleed dark panel */
 
+/* ─── Ayah card hover ─── */
+.ayah-card {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.ayah-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
 /* ─── Big Arabic watermark ─── */
 .arabic-watermark {
   position: absolute;

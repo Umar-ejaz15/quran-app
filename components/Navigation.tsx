@@ -42,9 +42,9 @@ export default function Navigation() {
           WebkitBackdropFilter: 'blur(24px)',
         }}
       >
-        <div className="w-full px-8 flex items-center gap-4 h-full">
+        <div className="w-full px-8 flex items-center h-full">
 
-          {/* Logo */}
+          {/* LEFT — Logo */}
           <Link href="/" className="flex items-center gap-3 flex-shrink-0 group">
             <LogoIcon size={38} />
             <div className="leading-tight">
@@ -53,11 +53,8 @@ export default function Navigation() {
             </div>
           </Link>
 
-          {/* Divider */}
-          <div className="w-px h-6 flex-shrink-0" style={{ background: 'var(--border)' }} />
-
-          {/* Nav Links */}
-          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
+          {/* CENTER — Nav links */}
+          <div className="flex-1 flex items-center justify-center gap-1 overflow-x-auto no-scrollbar">
             {allLinks.map(({ href, icon: Icon, label }) => {
               const active = isActive(href);
               return (
@@ -80,10 +77,7 @@ export default function Navigation() {
             })}
           </div>
 
-          {/* Spacer */}
-          <div className="flex-1" />
-
-          {/* Theme toggle */}
+          {/* RIGHT — Theme toggle */}
           <button
             onClick={toggle}
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}

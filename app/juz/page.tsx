@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Layers } from 'lucide-react';
 import Navigation from '@/components/Navigation';
+import PageHeader from '@/components/PageHeader';
 import { getMeta } from '@/lib/api';
 
 export const metadata = {
@@ -27,7 +27,6 @@ export default async function JuzPage() {
     // fall through to fallback
   }
 
-  // Fallback: generate 1–30 if API returned nothing or wrong format
   if (juzs.length === 0) {
     juzs = Array.from({ length: JUZ_COUNT }, (_, i) => ({
       index: i + 1,
@@ -37,34 +36,35 @@ export default async function JuzPage() {
   }
 
   return (
-    <div className="min-h-screen pattern-bg pb-20 md:pb-0">
+    <div className="min-h-screen pb-24 md:pb-8" style={{ background: 'var(--background)' }}>
       <Navigation />
 
-      <main className="container mx-auto px-4 md:px-6 py-8 md:py-12">
-
-        {/* Header */}
-        <div className="section-header mb-8 md:mb-10 animate-fade-in">
-          <div
-            className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 shadow-md"
-            style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))' }}
+      <PageHeader
+        title="Juz Navigation"
+        subtitle="30 equal parts — one per day completes the Quran in a month"
+        badge={
+          <span
+            className="px-3 py-1 rounded-full text-xs font-bold"
+            style={{
+              background: 'rgba(242,181,11,0.15)',
+              color: '#f2b50b',
+              border: '1px solid rgba(242,181,11,0.25)',
+            }}
           >
-            <Layers className="text-white" size={26} />
-          </div>
-          <h1 className="text-gradient-hero" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 800 }}>
-            Juz Navigation
-          </h1>
-          <p className="mt-2 text-base" style={{ color: 'var(--muted)' }}>
-            The Quran divided into 30 equal parts for daily reading
-          </p>
-        </div>
+            30 Parts
+          </span>
+        }
+      />
+
+      <main className="container mx-auto px-4 md:px-6 py-10 md:py-14">
 
         {/* Juz Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4 max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4 max-w-5xl mx-auto mb-12">
           {juzs.map((juz, i) => (
             <Link
               key={juz.index}
               href={`/juz/${juz.index}`}
-              className="group p-5 rounded-2xl text-center animate-fade-in hover-card"
+              className="group p-5 rounded-2xl text-center animate-fade-in transition-all hover:-translate-y-0.5 hover:border-[var(--primary)]"
               style={{
                 background: 'var(--card-bg)',
                 border: '1px solid var(--border)',
@@ -72,35 +72,46 @@ export default async function JuzPage() {
               }}
             >
               <div
-                className="text-3xl font-extrabold mb-2 group-hover:scale-110 transition-transform text-gradient-primary"
-                style={{ lineHeight: 1 }}
+                className="font-extrabold mb-1 group-hover:scale-105 transition-transform"
+                style={{
+                  fontFamily: 'Amiri, Georgia, serif',
+                  fontSize: '2.4rem',
+                  lineHeight: 1,
+                  letterSpacing: '-0.03em',
+                  color: 'var(--foreground)',
+                }}
               >
                 {juz.index}
               </div>
-              <div className="text-[10px] space-y-0.5" style={{ color: 'var(--muted)' }}>
-                {juz.start ? <div className="truncate">From {juz.start}</div> : null}
-                {juz.end   ? <div className="truncate">To {juz.end}</div>   : null}
+              <div
+                className="text-[10px] font-bold tracking-widest uppercase mb-2"
+                style={{ color: 'var(--secondary)' }}
+              >
+                Juz
               </div>
+              {(juz.start || juz.end) && (
+                <div className="text-[10px] space-y-0.5" style={{ color: 'var(--muted)' }}>
+                  {juz.start && <div className="truncate">{juz.start}</div>}
+                  {juz.end && <div className="truncate">{juz.end}</div>}
+                </div>
+              )}
             </Link>
           ))}
         </div>
 
-        {/* Info card */}
+        {/* Info */}
         <div
-          className="mt-10 max-w-3xl mx-auto p-6 rounded-2xl"
-          style={{
-            background: 'var(--card-bg)',
-            border: '1px solid var(--border)',
-            borderLeft: '3px solid var(--secondary)',
-          }}
+          className="max-w-3xl mx-auto p-6 md:p-8 rounded-2xl"
+          style={{ background: 'var(--card-bg)', border: '1px solid var(--border)' }}
         >
-          <h2 className="text-base font-bold mb-2" style={{ color: 'var(--primary)' }}>About Juz</h2>
-          <p className="text-sm leading-relaxed" style={{ color: 'var(--accent)' }}>
+          <h2 className="text-sm font-bold mb-2 tracking-wide uppercase" style={{ color: 'var(--muted)', letterSpacing: '0.1em' }}>About Juz</h2>
+          <p className="text-sm leading-relaxed" style={{ color: 'var(--accent)', fontFamily: 'Georgia, serif' }}>
             A Juz (plural: Ajzaa) is one of thirty parts of the Quran. Each Juz contains approximately
             the same number of verses, making it easier to complete the entire Quran in a month by reading
-            one Juz per day — commonly practiced during Ramadan.
+            one Juz per day — a practice commonly observed during Ramadan.
           </p>
         </div>
+
       </main>
     </div>
   );
