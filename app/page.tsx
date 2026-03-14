@@ -89,30 +89,21 @@ export default function Home() {
                   style={{ background: 'var(--border-strong)' }}
                 />
                 <span
-                  className="text-[10px] font-bold tracking-[0.25em] uppercase"
-                  style={{ color: 'var(--muted)', fontFamily: 'Amiri, serif', direction: 'rtl' }}
-                >
-                  القرآن الكريم
-                </span>
-              </div>
-
-              {/* Bismillah */}
-              <div className="reveal reveal-delay-2 mb-6">
-                <p
                   style={{
                     fontFamily: 'var(--font-arabic)',
-                    fontSize: 'clamp(1.4rem, 3.5vw, 2rem)',
-                    lineHeight: 2.2,
-                    textAlign: 'center',
-                    display: 'block',
-                    width: '100%',
+                    fontSize: 'clamp(1rem, 2vw, 1.4rem)',
                     color: 'var(--primary)',
+                    direction: 'rtl',
+                    lineHeight: 1.8,
                   }}
                 >
                   بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
-                </p>
+                </span>
               </div>
 
+            </div>{/* close max-w-2xl */}
+
+            <div className="max-w-2xl">
               {/* Main title */}
               <h1
                 className="reveal reveal-delay-3 font-extrabold leading-[0.92] mb-5"
@@ -268,69 +259,133 @@ export default function Home() {
         </section>
 
         {/* ══════════════════════════════════════════
-            VERSE SHOWCASE
+            VERSE SHOWCASE — full-bleed dark panel
         ══════════════════════════════════════════ */}
         <section
-          className="border-t"
-          style={{ borderColor: 'var(--border)', background: 'var(--surface)' }}
+          className="relative overflow-hidden"
+          style={{ background: 'var(--primary-dark)' }}
         >
-          <div className="container mx-auto px-5 md:px-10 py-14 md:py-20">
-            <div className="max-w-3xl mx-auto reveal reveal-delay-1">
-              <div className="verse-showcase">
-                <div className="verse-showcase-ornament" />
+          {/* Atmospheric glow behind verse */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'radial-gradient(ellipse 60% 70% at 50% 50%, rgba(200,146,10,0.07) 0%, transparent 70%)',
+            }}
+          />
 
-                {/* Ornament symbol */}
-                <div
-                  className="text-center text-2xl mb-6 opacity-40"
-                  style={{ color: 'var(--secondary)' }}
-                  aria-hidden="true"
-                >
-                  ۞
-                </div>
+          {/* Ghost Arabic letters — far left and right */}
+          <span
+            className="absolute pointer-events-none select-none hidden md:block"
+            aria-hidden="true"
+            style={{
+              fontFamily: 'var(--font-arabic)',
+              fontSize: 'clamp(16rem, 22vw, 28rem)',
+              lineHeight: 1,
+              color: '#ffffff',
+              opacity: 0.03,
+              left: '-3rem',
+              top: '50%',
+              transform: 'translateY(-50%)',
+            }}
+          >ا</span>
+          <span
+            className="absolute pointer-events-none select-none hidden md:block"
+            aria-hidden="true"
+            style={{
+              fontFamily: 'var(--font-arabic)',
+              fontSize: 'clamp(16rem, 22vw, 28rem)',
+              lineHeight: 1,
+              color: '#ffffff',
+              opacity: 0.03,
+              right: '-3rem',
+              top: '50%',
+              transform: 'translateY(-50%)',
+            }}
+          >م</span>
 
-                <p
-                  className="arabic-text text-center mb-6"
-                  style={{
-                    fontSize: 'clamp(1.6rem, 3.5vw, 2.1rem)',
-                    lineHeight: '3.4',
-                    color: 'var(--foreground)',
-                  }}
-                >
-                  إِنَّ هَٰذَا ٱلْقُرْءَانَ يَهْدِى لِلَّتِى هِىَ أَقْوَمُ
-                </p>
+          <div className="relative z-10 container mx-auto px-5 md:px-10 py-12 md:py-16">
+            <div className="max-w-4xl mx-auto text-center reveal reveal-delay-1">
 
-                <div
-                  className="h-px mb-6 mx-auto"
-                  style={{
-                    width: '60px',
-                    background: 'linear-gradient(to right, var(--secondary), var(--primary))',
-                  }}
-                />
+              {/* Gold small eyebrow */}
+              <p
+                className="mb-10 tracking-[0.28em] uppercase"
+                style={{
+                  fontSize: '0.6rem',
+                  fontWeight: 700,
+                  color: 'var(--secondary)',
+                }}
+              >
+                Verse of Guidance
+              </p>
 
-                <p
-                  className="text-center italic text-sm md:text-base mb-2"
-                  style={{ color: 'var(--accent)' }}
-                >
-                  &ldquo;Indeed, this Qur&apos;an guides to that which is most upright…&rdquo;
-                </p>
-                <p
-                  className="text-center text-xs font-semibold tracking-widest uppercase"
-                  style={{ color: 'var(--muted)' }}
-                >
-                  Surah Al-Isra · Ayah 9
-                </p>
+              {/* Arabic verse — large, luminous */}
+              <p
+                style={{
+                  fontFamily: 'var(--font-arabic)',
+                  fontSize: 'clamp(1.9rem, 4vw, 3rem)',
+                  lineHeight: '3.2',
+                  direction: 'rtl',
+                  textAlign: 'center',
+                  color: '#f5ede8',
+                  letterSpacing: '0.02em',
+                  marginBottom: '2.5rem',
+                }}
+              >
+                إِنَّ هَٰذَا ٱلْقُرْءَانَ يَهْدِى لِلَّتِى هِىَ أَقْوَمُ
+              </p>
 
-                <div className="text-center mt-8">
-                  <Link
-                    href="/surahs"
-                    className="inline-flex items-center gap-2 text-sm font-bold transition-all hover:gap-3"
-                    style={{ color: 'var(--primary)' }}
-                  >
-                    Begin your recitation
-                    <ArrowRight size={14} strokeWidth={2.5} />
-                  </Link>
-                </div>
+              {/* Gold dot separator */}
+              <div className="flex items-center justify-center gap-3 mb-8">
+                <div style={{ width: '32px', height: '1px', background: 'var(--secondary)', opacity: 0.5 }} />
+                <span style={{ color: 'var(--secondary)', fontSize: '0.5rem', opacity: 0.8 }}>◆</span>
+                <div style={{ width: '32px', height: '1px', background: 'var(--secondary)', opacity: 0.5 }} />
               </div>
+
+              {/* Translation */}
+              <p
+                className="italic mb-2"
+                style={{
+                  fontFamily: 'Georgia, serif',
+                  fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+                  color: 'rgba(237,224,212,0.75)',
+                  letterSpacing: '0.01em',
+                  lineHeight: 1.7,
+                }}
+              >
+                &ldquo;Indeed, this Qur&apos;an guides to that which is most upright…&rdquo;
+              </p>
+
+              {/* Reference */}
+              <p
+                className="mb-12 tracking-widest uppercase"
+                style={{
+                  fontSize: '0.6rem',
+                  fontWeight: 700,
+                  color: 'rgba(237,224,212,0.35)',
+                  letterSpacing: '0.2em',
+                }}
+              >
+                Surah Al-Isra · Ayah 9
+              </p>
+
+              {/* CTA */}
+              <Link
+                href="/surahs"
+                className="group inline-flex items-center gap-2.5 px-8 py-3.5 rounded-xl font-bold text-sm transition-all hover:-translate-y-0.5"
+                style={{
+                  background: 'var(--secondary)',
+                  color: '#1a0f0a',
+                  boxShadow: '0 4px 24px rgba(200,146,10,0.3)',
+                }}
+              >
+                Begin your recitation
+                <ArrowRight
+                  size={14}
+                  strokeWidth={2.5}
+                  className="transition-transform group-hover:translate-x-0.5"
+                />
+              </Link>
+
             </div>
           </div>
         </section>
