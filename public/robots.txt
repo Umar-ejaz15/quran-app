@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://www.noorulquraan.com
+Host: https://www.noorulquran.com
 
 # Sitemaps
-Sitemap: https://www.noorulquraan.com/sitemap.xml
+Sitemap: https://www.noorulquran.com/sitemap.xml

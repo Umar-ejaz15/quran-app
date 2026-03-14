@@ -7,6 +7,7 @@ import Navigation from '@/components/Navigation';
 import AyahCard from '@/components/AyahCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { getSurahWithOffset } from '@/lib/api';
+import { setCanonicalUrl, getSurahUrl } from '@/lib/canonical';
 import { Surah } from '@/types/quran';
 
 export default function SurahDetailPage() {
@@ -21,6 +22,9 @@ export default function SurahDetailPage() {
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
+    // Set canonical URL for SEO
+    setCanonicalUrl(getSurahUrl(surahNumber));
+
     async function loadSurah() {
       try {
         setLoading(true);

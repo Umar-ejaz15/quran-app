@@ -7,6 +7,7 @@ import Navigation from '@/components/Navigation';
 import AyahCard from '@/components/AyahCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { getJuzWithOffset } from '@/lib/api';
+import { setCanonicalUrl, getJuzUrl } from '@/lib/canonical';
 import { Ayah } from '@/types/quran';
 
 export default function JuzDetailPage() {
@@ -21,6 +22,9 @@ export default function JuzDetailPage() {
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
+    // Set canonical URL for SEO
+    setCanonicalUrl(getJuzUrl(juzNumber));
+
     async function loadJuz() {
       try {
         setLoading(true);

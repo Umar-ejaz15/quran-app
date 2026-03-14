@@ -4,12 +4,12 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: {
-    default: "Al-Quran Al-Kareem — Read, Search & Explore the Holy Quran",
-    template: "%s | Al-Quran Al-Kareem"
+    default: "Noor ul-Quran — Read, Search & Explore the Holy Quran",
+    template: "%s | Noor ul-Quran"
   },
   description: "Read and explore the Holy Quran with multiple translations, audio recitations, and rich navigation by Surah, Juz, Page, and more.",
-  keywords: ["Quran", "Al-Quran", "Holy Quran", "Islamic", "Quran Online", "Quran Translation", "Read Quran", "Quran Search"],
-  authors: [{ name: "Al-Quran Al-Kareem" }],
+  keywords: ["Quran", "Noor ul-Quran", "Holy Quran", "Islamic", "Quran Online", "Quran Translation", "Read Quran", "Quran Search"],
+  authors: [{ name: "Noor ul-Quran" }],
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -20,13 +20,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Al-Quran Al-Kareem",
+    title: "Noor ul-Quran",
     description: "Read and explore the Holy Quran online",
-    siteName: "Al-Quran",
+    siteName: "Noor ul-Quran",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Al-Quran Al-Kareem",
+    title: "Noor ul-Quran",
     description: "Read and explore the Holy Quran online",
   },
   icons: {
@@ -42,13 +42,48 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* Canonical tag for technical SEO */}
-        <link rel="canonical" href="https://www.noorulquraan.com/" />
+        <link rel="canonical" href="https://www.noorulquran.com/" />
         {/* Google site verification for SEO */}
         <meta name="google-site-verification" content="QR53olZK-kEVM-9UQuyGAdJKPgbCunhTTnub23K_V54" />
-        <meta name="application-name" content="Al-Quran" />
+        {/* JSON-LD Structured Data for Rich Snippets */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'Noor ul-Quran',
+              description: 'Read and explore the Holy Quran with multiple translations, audio recitations, and rich navigation',
+              url: 'https://www.noorulquran.com',
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: 'https://www.noorulquran.com/search?q={search_term_string}',
+                },
+                'query-input': 'required name=search_term_string',
+              },
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'Noor ul-Quran',
+              url: 'https://www.noorulquran.com',
+              description: 'A reverent platform to read, listen to, and explore the Holy Quran',
+              sameAs: [],
+              image: 'https://www.noorulquran.com/logo.svg',
+            }),
+          }}
+        />
+        <meta name="application-name" content="Noor ul-Quran" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Al-Quran" />
+        <meta name="apple-mobile-web-app-title" content="Noor ul-Quran" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#6d4831" />
         <link rel="manifest" href="/manifest.json" />

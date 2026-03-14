@@ -10,6 +10,7 @@ import Navigation from '@/components/Navigation';
 import AyahCard from '@/components/AyahCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { getPageWithOffset } from '@/lib/api';
+import { setCanonicalUrl, getPageUrl } from '@/lib/canonical';
 import { Ayah, Surah } from '@/types/quran';
 
 function toArabicNumerals(n: number): string {
@@ -91,6 +92,7 @@ export default function PageDetailPage() {
         setLoading(false);
       }
     }
+    setCanonicalUrl(getPageUrl(pageNumber));
     loadPage();
   }, [pageNumber, selectedEdition, reciterEdition]);
 

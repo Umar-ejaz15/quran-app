@@ -7,6 +7,7 @@ import Navigation from '@/components/Navigation';
 import AyahCard from '@/components/AyahCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { getHizbQuarterWithOffset } from '@/lib/api';
+import { setCanonicalUrl, getHizbUrl } from '@/lib/canonical';
 import { Ayah } from '@/types/quran';
 
 export default function HizbDetailPage() {
@@ -21,6 +22,9 @@ export default function HizbDetailPage() {
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
+    // Set canonical URL for SEO
+    setCanonicalUrl(getHizbUrl(hizbNumber));
+
     async function loadHizb() {
       try {
         setLoading(true);
