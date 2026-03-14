@@ -2,58 +2,60 @@
 
 /* ════════════════════════════════════════════════════════════
    DESIGN SYSTEM — Al-Quran Al-Kareem
-   Premium Islamic app aesthetic: Deep greens, warm golds,
-   parchment backgrounds, rich typography
+   Warm terracotta-brown & gold — rich, earthy, timeless
 ════════════════════════════════════════════════════════════ */
 
 /* ─── Design Tokens: Light Mode ─── */
 :root {
-  /* Core surfaces — warm manuscript white */
-  --background:        #f0ece4;
-  --foreground:        #0d1a0d;
+  /* Core surfaces — warm parchment white */
+  --background:        #f7f0eb;
+  --foreground:        #1a0f0a;
   --card-bg:           #ffffff;
-  --hover:             #eaf2ec;
-  --surface:           #f7f4ef;
+  --hover:             #f2e8e2;
+  --surface:           #f0e6df;
 
-  /* Brand: Deep Islamic Green — solid, authoritative */
-  --primary:           #0c5130;
-  --primary-light:     #177a4a;
-  --primary-dark:      #073620;
-  --primary-faint:     #e4f2ea;
+  /* Brand: Terracotta Brown #6D4831 */
+  --primary:           #6d4831;
+  --primary-light:     #9a6347;
+  --primary-dark:      #4e3223;
+  --primary-faint:     #f5ede8;
 
-  /* Brand: Amber Gold — accent only, not dominant */
-  --secondary:         #8a5c00;
-  --secondary-light:   #b07c14;
-  --secondary-dark:    #5e3e00;
-  --secondary-faint:   #fdf3e0;
+  /* Brand: Amber Gold — accent, warm, striking */
+  --secondary:         #c8920a;
+  --secondary-light:   #f2b50b;
+  --secondary-dark:    #9a6e06;
+  --secondary-faint:   #fef6d8;
 
   /* Text shades */
-  --accent:            #2e3a2e;
-  --muted:             #6a7060;
-  --subtle:            #b0b8a8;
+  --accent:            #2e1f16;
+  --muted:             #7a6057;
+  --subtle:            #bfb0a8;
 
-  /* Borders — clean, not heavy */
-  --border:            #d8d4ca;
-  --border-strong:     #b8b2a6;
+  /* Borders */
+  --border:            #e0d4cc;
+  --border-strong:     #c4b0a4;
 
   /* Status */
-  --success:           #177a4a;
+  --success:           #5a7a40;
 
-  /* Shadow / glow — very subtle */
-  --gold-glow:         rgba(138, 92, 0, 0.10);
-  --green-glow:        rgba(12, 81, 48, 0.08);
+  /* Shadow / glow */
+  --gold-glow:         rgba(200, 146, 10, 0.18);
+  --primary-glow:      rgba(109, 72, 49, 0.12);
 
   /* Mushaf page */
   --mushaf-bg:         #fdf8ee;
-  --mushaf-border:     #c0901a;
+  --mushaf-border:     #c8920a;
   --mushaf-text:       #140e08;
   --mushaf-secondary:  #f7eedc;
-  --mushaf-ornament:   #9a7010;
+  --mushaf-ornament:   #9a6347;
 
   /* Fonts */
   --font-sans:         "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --font-mono:         "SFMono-Regular", "Consolas", monospace;
   --font-arabic:       "Scheherazade New", "Noto Naskh Arabic", "Amiri Quran", "Amiri", "Traditional Arabic", serif;
+
+  /* RGB channels for alpha-transparent surfaces */
+  --nav-bg:            rgba(247, 240, 235, 0.82);
 }
 
 @theme inline {
@@ -65,41 +67,41 @@
   --font-mono:             var(--font-mono);
 }
 
-/* ─── Dark Mode — warm midnight green, not cold blue ─── */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background:        #0c100d;
-    --foreground:        #e4dfd4;
-    --card-bg:           #131a14;
-    --hover:             #1a241b;
-    --surface:           #0f140f;
+/* ─── Dark Mode — deep walnut, warm gold accents ─── */
+.dark {
+  --background:        #110a07;
+  --foreground:        #ede0d4;
+  --card-bg:           #1c1108;
+  --hover:             #261810;
+  --surface:           #180e08;
 
-    --primary:           #3ec87a;
-    --primary-light:     #56da90;
-    --primary-dark:      #2ea868;
-    --primary-faint:     rgba(62, 200, 122, 0.10);
+  --primary:           #c8845a;
+  --primary-light:     #e0a07a;
+  --primary-dark:      #a06040;
+  --primary-faint:     rgba(200, 132, 90, 0.14);
 
-    --secondary:         #c49020;
-    --secondary-light:   #dba838;
-    --secondary-dark:    #a07010;
-    --secondary-faint:   rgba(196, 144, 32, 0.10);
+  --secondary:         #f2b50b;
+  --secondary-light:   #f7c840;
+  --secondary-dark:    #c8920a;
+  --secondary-faint:   rgba(242, 181, 11, 0.12);
 
-    --accent:            #b8b0a0;
-    --muted:             #5e7a68;
-    --subtle:            #253025;
+  --accent:            #c8b8a8;
+  --muted:             #8c7060;
+  --subtle:            #3a2518;
 
-    --border:            #1c2a1e;
-    --border-strong:     #283c2a;
+  --border:            #2e1e12;
+  --border-strong:     #4a3020;
 
-    --gold-glow:         rgba(196, 144, 32, 0.12);
-    --green-glow:        rgba(62, 200, 122, 0.08);
+  --gold-glow:         rgba(242, 181, 11, 0.16);
+  --primary-glow:      rgba(200, 132, 90, 0.14);
 
-    --mushaf-bg:         #181208;
-    --mushaf-border:     #c09018;
-    --mushaf-text:       #f0e8d0;
-    --mushaf-secondary:  #201808;
-    --mushaf-ornament:   #c49020;
-  }
+  --mushaf-bg:         #181208;
+  --mushaf-border:     #c8920a;
+  --mushaf-text:       #f0e8d0;
+  --mushaf-secondary:  #201408;
+  --mushaf-ornament:   #f2b50b;
+
+  --nav-bg:            rgba(17, 10, 7, 0.82);
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -116,6 +118,16 @@ body {
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Logo icon: invert in dark mode so brown SVG stays visible ─── */
+.logo-icon {
+  /* Light mode: brown #6d4831 on light bg — natural, no filter */
+  filter: none;
+}
+.dark .logo-icon {
+  /* Dark mode: shift to a warm light terracotta visible on dark bg */
+  filter: brightness(0) saturate(100%) invert(72%) sepia(30%) saturate(600%) hue-rotate(340deg) brightness(105%);
 }
 
 /* ─── Custom Scrollbar ─── */
@@ -140,7 +152,7 @@ body {
 
 /* ─── Selection ─── */
 ::selection {
-  background: rgba(27, 107, 74, 0.18);
+  background: rgba(109, 72, 49, 0.18);
   color: var(--foreground);
 }
 
@@ -206,11 +218,7 @@ a, button, input, select, textarea {
   min-height: 100vh;
 }
 
-@media (prefers-color-scheme: dark) {
-  .pattern-bg {
-    background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
-  }
-}
+/* pattern-bg uses CSS vars so it auto-updates with .dark class */
 
 /* ════════════════════════════════════════════════════════════
    CARDS & SURFACES
@@ -230,7 +238,7 @@ a, button, input, select, textarea {
   transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 .card-elevated:hover {
-  box-shadow: 0 4px 20px rgba(27, 107, 74, 0.12), 0 8px 32px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px rgba(109, 72, 49, 0.14), 0 8px 32px rgba(0, 0, 0, 0.06);
   border-color: var(--primary);
   transform: translateY(-1px);
 }
@@ -239,7 +247,7 @@ a, button, input, select, textarea {
   transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 .card-hover:hover {
-  box-shadow: 0 4px 24px rgba(27, 107, 74, 0.10);
+  box-shadow: 0 4px 24px rgba(109, 72, 49, 0.12);
   border-color: var(--primary);
 }
 
@@ -261,7 +269,7 @@ a, button, input, select, textarea {
   color: #fff;
   font-size: 0.75rem;
   font-weight: 700;
-  box-shadow: 0 2px 8px var(--green-glow);
+  box-shadow: 0 2px 8px var(--primary-glow);
   flex-shrink: 0;
 }
 
@@ -402,12 +410,12 @@ a, button, input, select, textarea {
   font-size: 0.9rem;
   border: none;
   cursor: pointer;
-  box-shadow: 0 2px 8px var(--green-glow);
+  box-shadow: 0 2px 8px var(--primary-glow);
 }
 .btn-primary:hover {
   background: var(--primary-light);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px var(--green-glow);
+  box-shadow: 0 4px 16px var(--primary-glow);
 }
 
 .btn-outline {
@@ -438,7 +446,7 @@ a, button, input, select, textarea {
 }
 .hover-card:hover {
   border-color: var(--primary) !important;
-  box-shadow: 0 6px 24px rgba(27, 107, 74, 0.12) !important;
+  box-shadow: 0 6px 24px rgba(109, 72, 49, 0.14) !important;
   transform: translateY(-2px) !important;
 }
 
@@ -471,7 +479,7 @@ a, button, input, select, textarea {
 .hover-btn-outline:hover {
   background: var(--primary) !important;
   color: white !important;
-  box-shadow: 0 4px 16px var(--green-glow);
+  box-shadow: 0 4px 16px var(--primary-glow);
 }
 
 /* ─── Select / Input ─── */
@@ -660,7 +668,167 @@ a, button, input, select, textarea {
 .hero-glow {
   position: absolute;
   inset: -40%;
-  background: radial-gradient(ellipse at center, var(--green-glow) 0%, transparent 65%);
+  background:
+    radial-gradient(ellipse at 40% 50%, var(--primary-glow) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 60%, var(--gold-glow) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
+}
+
+/* ════════════════════════════════════════════════════════════
+   LANDING PAGE — ANIMATIONS & SPECIAL UTILITIES
+════════════════════════════════════════════════════════════ */
+
+/* ─── Refined easing custom props ─── */
+:root {
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Reveal animation (slide up + fade) ─── */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Slow float for the bg Arabic watermark ─── */
+@keyframes floatGlyph {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%       { transform: translateY(-18px) rotate(-3deg); }
+}
+
+/* ─── Gold shimmer sweep ─── */
+@keyframes goldSweep {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+/* ─── Subtle scale pulse for logo ─── */
+@keyframes logoPulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.04); }
+}
+
+/* ─── Line grow from left ─── */
+@keyframes growLine {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ─── Stagger reveal class ─── */
+.reveal {
+  opacity: 0;
+  animation: revealUp 0.7s var(--ease-out-quint) forwards;
+}
+.reveal-delay-1  { animation-delay: 80ms;  }
+.reveal-delay-2  { animation-delay: 160ms; }
+.reveal-delay-3  { animation-delay: 240ms; }
+.reveal-delay-4  { animation-delay: 320ms; }
+.reveal-delay-5  { animation-delay: 400ms; }
+.reveal-delay-6  { animation-delay: 480ms; }
+.reveal-delay-7  { animation-delay: 560ms; }
+.reveal-delay-8  { animation-delay: 640ms; }
+
+/* stat-card/value/label removed — replaced with inline minimal strip */
+
+/* ─── Feature row item ─── */
+.feature-row-item {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.1rem 1.5rem;
+  border-radius: 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.feature-row-item:hover {
+  border-color: var(--primary);
+  background: var(--hover);
+  box-shadow: 0 4px 20px var(--primary-glow);
+}
+
+/* ─── Verse showcase ─── */
+.verse-showcase {
+  position: relative;
+  padding: 3.5rem 2.5rem;
+  border-radius: 1.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.verse-showcase::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary-faint) 0%, transparent 60%);
+  pointer-events: none;
+}
+.verse-showcase-ornament {
+  position: absolute;
+  top: -1px; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, transparent, var(--secondary), var(--primary), transparent);
+}
+
+/* ─── Big Arabic watermark ─── */
+.arabic-watermark {
+  position: absolute;
+  font-family: var(--font-arabic);
+  font-size: clamp(12rem, 28vw, 22rem);
+  line-height: 1;
+  color: var(--primary);
+  opacity: 0.04;
+  pointer-events: none;
+  user-select: none;
+  animation: floatGlyph 9s ease-in-out infinite;
+  direction: rtl;
+}
+.dark .arabic-watermark { opacity: 0.06; }
+
+/* ─── Thin rule with ornament ─── */
+.ornament-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  color: var(--secondary);
+}
+.ornament-rule::before,
+.ornament-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to var(--_dir, right), transparent, var(--border), transparent);
+}
+.ornament-rule::before { --_dir: right; }
+.ornament-rule::after  { --_dir: left; }
+
+/* ─── Logo pulse on hero ─── */
+.logo-hero-wrap {
+  animation: logoPulse 4s ease-in-out infinite;
+}
+
+/* ─── Hero search outline button ─── */
+.hero-search-btn {
+  background: transparent;
+}
+.hero-search-btn:hover {
+  background: var(--primary-faint);
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .logo-hero-wrap,
+  .arabic-watermark {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .stat-card,
+  .feature-row-item {
+    transition: none !important;
+  }
 }

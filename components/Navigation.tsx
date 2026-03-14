@@ -4,8 +4,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Home, BookOpen, Layers, Search, Hand, Info,
-  FileText
+  FileText, Sun, Moon
 } from 'lucide-react';
+import { useTheme } from '@/components/ThemeProvider';
+import LogoIcon from '@/components/LogoIcon';
 
 const allLinks = [
   { href: '/',       icon: Home,     label: 'Home'   },
@@ -19,6 +21,7 @@ const allLinks = [
 
 export default function Navigation() {
   const pathname = usePathname();
+  const { theme, toggle } = useTheme();
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
@@ -31,31 +34,22 @@ export default function Navigation() {
           Desktop Navigation — sticky top bar
       ════════════════════════════════════════ */}
       <nav
-        className="hidden md:flex sticky top-0 z-50 items-center border-b"
+        className="hidden md:flex sticky top-0 z-50 items-center"
         style={{
-          height: '62px',
-          background: 'var(--card-bg)',
-          borderColor: 'var(--border)',
-          boxShadow: '0 1px 16px rgba(0,0,0,0.08)',
-          backdropFilter: 'blur(16px)',
+          height: '68px',
+          background: 'var(--nav-bg)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
         }}
       >
-        <div className="container mx-auto px-5 flex items-center gap-3 h-full">
+        <div className="w-full px-8 flex items-center gap-4 h-full">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 flex-shrink-0 group mr-2">
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center shadow-sm"
-              style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))' }}
-            >
-              <span
-                className="text-white font-bold"
-                style={{ fontFamily: 'Scheherazade New, Noto Naskh Arabic, Amiri Quran, Amiri, serif', fontSize: '1.1rem' }}
-              >ق</span>
-            </div>
+          <Link href="/" className="flex items-center gap-3 flex-shrink-0 group">
+            <LogoIcon size={38} />
             <div className="leading-tight">
-              <div className="text-sm font-bold" style={{ color: 'var(--primary)' }}>Al-Quran</div>
-              <div className="text-[9px] font-semibold tracking-widest uppercase" style={{ color: 'var(--muted)' }}>Al-Kareem</div>
+              <div className="text-base font-bold" style={{ color: 'var(--primary)' }}>Al-Quran</div>
+              <div className="text-[10px] font-semibold tracking-widest uppercase" style={{ color: 'var(--muted)' }}>Al-Kareem</div>
             </div>
           </Link>
 
@@ -63,21 +57,21 @@ export default function Navigation() {
           <div className="w-px h-6 flex-shrink-0" style={{ background: 'var(--border)' }} />
 
           {/* Nav Links */}
-          <div className="flex items-center gap-0.5 flex-1 overflow-x-auto min-w-0 no-scrollbar">
+          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
             {allLinks.map(({ href, icon: Icon, label }) => {
               const active = isActive(href);
               return (
                 <Link
                   key={href}
                   href={href}
-                  className="relative flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all hover:bg-[var(--hover)]"
-                  style={{ color: active ? 'var(--primary)' : 'var(--muted)' }}
+                  className="relative flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm whitespace-nowrap transition-all hover:bg-[var(--hover)]"
+                  style={{ color: active ? 'var(--primary)' : 'var(--muted)', fontWeight: active ? 700 : 500 }}
                 >
-                  <Icon size={13} />
-                  <span style={{ fontWeight: active ? 700 : 500 }}>{label}</span>
+                  <Icon size={14} />
+                  {label}
                   {active && (
                     <span
-                      className="absolute -bottom-px left-2 right-2 h-0.5 rounded-full"
+                      className="absolute -bottom-px left-3 right-3 h-0.5 rounded-full"
                       style={{ background: 'var(--secondary)' }}
                     />
                   )}
@@ -85,6 +79,19 @@ export default function Navigation() {
               );
             })}
           </div>
+
+          {/* Spacer */}
+          <div className="flex-1" />
+
+          {/* Theme toggle */}
+          <button
+            onClick={toggle}
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-all hover:bg-[var(--hover)]"
+            style={{ color: 'var(--muted)' }}
+          >
+            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
         </div>
       </nav>
 
@@ -92,7 +99,7 @@ export default function Navigation() {
           Mobile — top identity bar
       ════════════════════════════════════════ */}
       <header
-        className="md:hidden sticky top-0 z-50 flex items-center justify-center px-4 border-b"
+        className="md:hidden sticky top-0 z-50 flex items-center justify-between px-4 border-b"
         style={{
           height: '50px',
           background: 'var(--card-bg)',
@@ -102,21 +109,21 @@ export default function Navigation() {
         }}
       >
         <Link href="/" className="flex items-center gap-2">
-          <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))' }}
-          >
-            <span
-              className="text-white font-bold"
-              style={{ fontFamily: 'Scheherazade New, Noto Naskh Arabic, Amiri Quran, Amiri, serif', fontSize: '0.85rem' }}
-            >ق</span>
-          </div>
+          <LogoIcon size={28} />
           <div className="leading-tight">
             <span className="text-sm font-bold" style={{ color: 'var(--primary)' }}>Al-Quran Al-Kareem</span>
             <span className="mx-2 text-xs" style={{ color: 'var(--border-strong)' }}>·</span>
             <span className="text-xs" style={{ color: 'var(--muted)', fontFamily: 'Amiri, serif' }}>القرآن الكريم</span>
           </div>
         </Link>
+        <button
+          onClick={toggle}
+          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          className="w-8 h-8 rounded-lg flex items-center justify-center transition-all hover:bg-[var(--hover)]"
+          style={{ color: 'var(--muted)' }}
+        >
+          {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+        </button>
       </header>
 
       {/* ════════════════════════════════════════

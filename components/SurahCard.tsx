@@ -22,7 +22,7 @@ export default function SurahCard({ surah, showAyahCount = true }: SurahCardProp
         onMouseEnter={e => {
           const el = e.currentTarget as HTMLDivElement;
           el.style.borderColor = 'var(--primary)';
-          el.style.boxShadow = '0 4px 20px rgba(27,107,74,0.10)';
+          el.style.boxShadow = '0 4px 20px rgba(109,72,49,0.14)';
           el.style.transform = 'translateY(-1px)';
         }}
         onMouseLeave={e => {

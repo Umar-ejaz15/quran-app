@@ -1,126 +1,133 @@
 "use client";
 
 import Link from 'next/link';
-import { BookOpen, Search, BookText, Layers, Hand, Globe, FileText } from 'lucide-react';
+import { BookOpen, Search, BookText, Layers, Hand, Globe, FileText, ArrowUpRight } from 'lucide-react';
 
 const features = [
   {
     icon: BookOpen,
     title: 'Surahs',
-    description: 'Browse all 114 chapters of the Quran with translations and audio',
+    description: 'All 114 chapters with translations and audio recitation',
     href: '/surahs',
     badge: '114',
   },
   {
     icon: Layers,
     title: 'Juz',
-    description: 'Navigate by 30 equal divisions — perfect for daily reading',
+    description: '30 equal divisions — ideal for daily Ramadan reading',
     href: '/juz',
     badge: '30',
   },
   {
     icon: BookText,
     title: 'Pages',
-    description: 'Jump to any Mushaf page with authentic page layout view',
+    description: 'Jump to any Mushaf page with faithful layout view',
     href: '/pages',
     badge: '604',
   },
   {
     icon: Search,
     title: 'Search',
-    description: 'Find any verse or phrase across all translations instantly',
+    description: 'Find any verse or phrase across all translations',
     href: '/search',
+    badge: null,
   },
   {
     icon: Hand,
-    title: 'Sajda',
-    description: 'All 15 verses requiring prostration during recitation',
+    title: 'Sajda Verses',
+    description: 'All 15 verses of prostration for your recitation',
     href: '/sajda',
     badge: '15',
   },
   {
     icon: Globe,
     title: 'Editions',
-    description: 'Explore dozens of translations and audio reciters',
+    description: 'Dozens of translations and audio reciters to choose from',
     href: '/editions',
+    badge: null,
   },
   {
     icon: FileText,
     title: 'About',
-    description: 'Learn about this project and its data sources',
+    description: 'About this project, its sources, and how it was built',
     href: '/about',
+    badge: null,
   },
 ];
 
 export default function FeatureGrid() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
       {features.map((feature, index) => {
         const Icon = feature.icon;
+        const num = String(index + 1).padStart(2, '0');
         return (
           <Link
             key={feature.href}
             href={feature.href}
-            className="group relative flex flex-col p-5 md:p-6 rounded-2xl transition-all duration-200 animate-fade-in overflow-hidden"
-            style={{
-              background: 'var(--card-bg)',
-              border: '1px solid var(--border)',
-              animationDelay: `${index * 55}ms`,
-            }}
-            onMouseEnter={e => {
-              const el = e.currentTarget as HTMLAnchorElement;
-              el.style.borderColor = 'var(--primary)';
-              el.style.boxShadow = '0 8px 32px rgba(27,107,74,0.12)';
-              el.style.transform = 'translateY(-2px)';
-            }}
-            onMouseLeave={e => {
-              const el = e.currentTarget as HTMLAnchorElement;
-              el.style.borderColor = 'var(--border)';
-              el.style.boxShadow = 'none';
-              el.style.transform = 'none';
-            }}
+            className={`feature-row-item reveal reveal-delay-${Math.min(index + 3, 8)}`}
           >
-            {/* Gold accent top line on hover */}
-            <div
-              className="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity"
-              style={{ background: 'linear-gradient(to right, var(--secondary), transparent)' }}
-            />
+            {/* Index number */}
+            <span
+              className="flex-shrink-0 font-bold tabular-nums"
+              style={{
+                fontSize: '0.65rem',
+                letterSpacing: '0.04em',
+                color: 'var(--border-strong)',
+                width: '1.6rem',
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
+              {num}
+            </span>
 
             {/* Icon */}
             <div
-              className="w-11 h-11 md:w-12 md:h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
+              className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110"
               style={{
                 background: 'var(--primary-faint)',
                 color: 'var(--primary)',
               }}
             >
-              <Icon size={22} />
+              <Icon size={17} strokeWidth={2} />
             </div>
 
-            {/* Title + badge */}
-            <div className="flex items-center gap-2 mb-2">
-              <h3
-                className="text-sm font-bold group-hover:text-[var(--primary)] transition-colors"
-                style={{ color: 'var(--foreground)' }}
-              >
-                {feature.title}
-              </h3>
-              {feature.badge && (
+            {/* Text */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-0.5">
                 <span
-                  className="text-[10px] font-bold px-1.5 py-0.5 rounded-md"
-                  style={{
-                    background: 'var(--secondary-faint)',
-                    color: 'var(--secondary)',
-                  }}
+                  className="text-sm font-bold"
+                  style={{ color: 'var(--foreground)' }}
                 >
-                  {feature.badge}
+                  {feature.title}
                 </span>
-              )}
+                {feature.badge && (
+                  <span
+                    className="text-[9px] font-bold px-1.5 py-0.5 rounded-md flex-shrink-0"
+                    style={{
+                      background: 'var(--secondary-faint)',
+                      color: 'var(--secondary-dark)',
+                    }}
+                  >
+                    {feature.badge}
+                  </span>
+                )}
+              </div>
+              <p
+                className="text-xs leading-relaxed truncate"
+                style={{ color: 'var(--muted)' }}
+              >
+                {feature.description}
+              </p>
             </div>
 
-            <p className="text-xs leading-relaxed" style={{ color: 'var(--muted)' }}>
-              {feature.description}
-            </p>
+            {/* Arrow */}
+            <ArrowUpRight
+              size={14}
+              strokeWidth={2}
+              className="flex-shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              style={{ color: 'var(--border-strong)' }}
+            />
           </Link>
         );
       })}

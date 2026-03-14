@@ -353,7 +353,7 @@ export default function PageDetailPage() {
                         <span
                           key={ayah.number}
                           style={active ? {
-                            background: 'rgba(12,81,48,0.14)',
+                            background: 'rgba(109,72,49,0.16)',
                             borderRadius: '4px',
                             padding: '0 3px',
                           } : undefined}
