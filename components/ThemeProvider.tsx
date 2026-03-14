@@ -28,10 +28,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       apply(stored);
       setTheme(stored);
     } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const initial: Theme = prefersDark ? 'dark' : 'light';
-      apply(initial);
-      setTheme(initial);
+      apply('light');
+      setTheme('light');
     }
   }, []);
 
