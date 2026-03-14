@@ -160,8 +160,9 @@ export default function AyahCard({ ayah, translationText }: AyahCardProps) {
             key={label}
             className="text-xs px-2 py-0.5 rounded"
             style={{
-              color: 'var(--subtle)',
-              background: 'var(--hover)',
+              color: 'var(--muted)',
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
             }}
           >
             {label}
