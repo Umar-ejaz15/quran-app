@@ -161,15 +161,63 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/logo.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        
+        {/* Preload critical fonts */}
+        <link
+          rel="preload"
+          as="font"
+          href="https://fonts.gstatic.com/s/scheherazadenew/v20/4UaZrFhTvxVnHDvUkUiHg8jprP4DOwFmO3wq9IqeuA.woff2"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          as="font"
+          href="https://fonts.gstatic.com/s/notonaskharabic/v44/RrQKbpV-9Dd1b1OAGA6M9PkyDuVBeN2DHV2mLXgzTrc.woff2"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        
+        {/* Font CSS with display=swap to prevent FOIT */}
         <link
           href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;700&family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap"
           rel="stylesheet"
+          media="print"
+          onLoad="this.media='all'"
         />
+        <noscript>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;700&family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap"
+            rel="stylesheet"
+          />
+        </noscript>
       </head>
       <body className="antialiased">
         <ThemeProvider>
           {children}
         </ThemeProvider>
+        
+        {/* Font loading optimization script */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              // Mark fonts as loaded when available
+              if (document.fonts) {
+                document.fonts.ready.then(() => {
+                  document.documentElement.className += ' fonts-loaded';
+                });
+              }
+              // Fallback: mark as loaded after timeout
+              setTimeout(() => {
+                if (!document.documentElement.className.includes('fonts-loaded')) {
+                  document.documentElement.className += ' fonts-loaded';
+                }
+              }, 3000);
+            })();
+          `
+        }} />
       </body>
     </html>
   );

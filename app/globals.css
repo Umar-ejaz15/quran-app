@@ -1,6 +1,28 @@
 @import "tailwindcss";
 
 /* ════════════════════════════════════════════════════════════
+   FONT OPTIMIZATION — Ensure fonts load without blocking rendering
+   display=swap prevents FOIT (Flash of Invisible Text)
+════════════════════════════════════════════════════════════ */
+@font-feature-values "Scheherazade New" {
+  @styleset font-arabic-proper;
+}
+
+/* Fallback for fonts while loading */
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+body {
+  font-family: inherit;
+}
+
+/* Once Arabic fonts load, apply them */
+body.fonts-loaded {
+  font-family: "Scheherazade New", "Noto Naskh Arabic", "Amiri", system-ui, sans-serif;
+}
+
+/* ════════════════════════════════════════════════════════════
    DESIGN SYSTEM — Al-Quran Al-Kareem
    Warm terracotta-brown & gold — rich, earthy, timeless
 ════════════════════════════════════════════════════════════ */
