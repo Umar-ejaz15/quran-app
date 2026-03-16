@@ -1,12 +1,12 @@
 {
-  "name": "Al-Quran Al-Kareem",
-  "short_name": "Al-Quran",
-  "description": "Read, study, and reflect upon the Holy Quran with multiple translations and powerful search",
+  "name": "Noor ul Quran — Read, Search & Explore the Holy Quran",
+  "short_name": "Noor ul Quran",
+  "description": "Read, study, and reflect upon the Holy Quran with multiple translations, audio recitations, and powerful search capabilities",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f7f0eb",
   "theme_color": "#6d4831",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
   "scope": "/",
   "icons": [
     {
@@ -16,11 +16,11 @@
       "purpose": "any"
     }
   ],
-  "categories": ["education", "books", "lifestyle"],
+  "categories": ["education", "books", "reference", "religion"],
   "screenshots": [
     {
       "src": "/screenshot-mobile.png",
-      "sizes": "640x1136",
+      "sizes": "540x720",
       "type": "image/png",
       "form_factor": "narrow"
     },
@@ -33,5 +33,33 @@
   ],
   "dir": "ltr",
   "lang": "en-US",
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Search Quran",
+      "short_name": "Search",
+      "description": "Search the Quran by keyword",
+      "url": "/search",
+      "icons": [
+        {
+          "src": "/logo.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "All Surahs",
+      "short_name": "Surahs",
+      "description": "Browse all 114 Surahs",
+      "url": "/surahs",
+      "icons": [
+        {
+          "src": "/logo.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
 }

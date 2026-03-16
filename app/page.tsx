@@ -1,8 +1,32 @@
+import type { Metadata } from "next";
 import Link from 'next/link';
 import { BookOpen, Search, ArrowRight } from 'lucide-react';
 import FeatureGrid from '@/components/FeatureGrid';
 import Navigation from '@/components/Navigation';
 import LogoIcon from '@/components/LogoIcon';
+
+export const metadata: Metadata = {
+  title: "Noor ul Quran — Read, Search & Explore the Holy Quran",
+  description: "Read and explore the Holy Quran with multiple translations, audio recitations, and rich navigation by Surah, Juz, Page, and more. Search across all verses instantly.",
+  keywords: ["Quran", "Noor ul Quran", "Holy Quran", "Islamic", "Quran Online", "Quran Translation", "Read Quran", "Quran Search", "Al-Quran Al-Kareem"],
+  openGraph: {
+    title: "Noor ul Quran — Read, Search & Explore the Holy Quran",
+    description: "Read and explore the Holy Quran with multiple translations, audio recitations, and rich navigation",
+    url: "https://www.noorulquraan.com",
+    type: "website",
+    images: [
+      {
+        url: "https://www.noorulquraan.com/logo.svg",
+        width: 200,
+        height: 200,
+        alt: "Noor ul Quran Logo",
+      },
+    ],
+  },
+  alternates: {
+    canonical: "https://www.noorulquraan.com",
+  },
+};
 
 export default function Home() {
   return (

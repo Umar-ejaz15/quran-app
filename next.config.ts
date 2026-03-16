@@ -6,6 +6,13 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   turbopack: {},
+  compress: true,
+  productionBrowserSourceMaps: false,
+  poweredByHeader: false,
+  staticPageGenerationTimeout: 60,
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
 };
 
 export default withPWA({

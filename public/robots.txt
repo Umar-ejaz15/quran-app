@@ -1,9 +1,17 @@
-# *
+# Allow all crawlers
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /.well-known/
 
-# Host
-Host: https://www.noorulquran.com
+# Block bad bots
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: DotBot
+Disallow: /
+
+# Host and canonical
+Host: https://www.noorulquraan.com
 
 # Sitemaps
-Sitemap: https://www.noorulquran.com/sitemap.xml
+Sitemap: https://www.noorulquraan.com/sitemap.xml
